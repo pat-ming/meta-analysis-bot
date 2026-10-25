@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24T21:53",
+  "generated": "2026-10-25T11:03",
   "pipeline_version": "0.1.0",
   "replication": [
     {
@@ -96,7 +96,7 @@
         "mean_sd",
         "mean_sem"
       ],
-      "csv": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/reports/poolable_mir-26a-5p_psoriatic-arthritis-vs-psoriasis-without.csv",
+      "csv": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/graphs/psa-demo/litgraph/reports/poolable_mir-26a-5p_psoriatic-arthritis-vs-psoriasis-without.csv",
       "complete_rows": 2
     }
   ]

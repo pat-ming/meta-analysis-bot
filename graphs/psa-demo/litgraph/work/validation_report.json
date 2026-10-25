@@ -41,6 +41,6 @@
     "flags": {
       "quote_wrong_page": 1
     },
-    "report_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/validation_report.json"
+    "report_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/graphs/psa-demo/litgraph/work/validation_report.json"
   }
 }

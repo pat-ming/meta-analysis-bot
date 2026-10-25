@@ -1,8 +1,10 @@
-"""Build a small demo project (fake extractions and judgments) to try the viewer: python3 tests/make_demo.py"""
+"""Build a small demo graph in graphs/psa-demo (fake extractions and judgments) to try the viewer:
+    python3 tests/make_demo.py && python3 start.py
+"""
 import sys, json, contextlib, io
 from pathlib import Path
 root = Path(__file__).resolve().parent.parent
-demo = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "examples" / "demo"
+demo = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "graphs" / "psa-demo"
 sys.path[:0] = [str(root / "litgraph"), str(root / "tests")]
 import fixture
 from litgraph_py import cli

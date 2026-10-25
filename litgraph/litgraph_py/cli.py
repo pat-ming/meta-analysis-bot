@@ -8,7 +8,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import __version__, build, edges, ingest, pdftext, report, resolve, validate
+from . import __version__, build, edges, hub, ingest, pdftext, report, resolve, validate
 from .io import Project, read_json, read_jsonl, write_json
 from .verify import verify
 
@@ -27,6 +27,16 @@ def cmd_init(a, p):
     cfg["pipeline_version"] = __version__
     write_json(p.config, cfg)
     return _out({"project": str(p.root), "config": cfg, "text_backend": pdftext.backend()})
+
+
+def cmd_new(a, p):
+    return _out(hub.new(a.source, a.name, a.graphs, a.topic))
+
+
+def cmd_serve(a, p):
+    from . import server
+    server.serve_hub(Path(a.graphs).resolve() if a.graphs else hub.default_graphs_dir(), a.port, not a.no_open, a.reviewer)
+    return 0
 
 
 def cmd_ingest(a, p):
@@ -144,6 +154,18 @@ def main(argv=None):
     s = sub.add_parser("init", help="create litgraph/ in the project")
     s.add_argument("--topic")
     s.set_defaults(fn=cmd_init)
+    s = sub.add_parser("new", help="create (or add papers to) graphs/<name> from a zip or folder of PDFs")
+    s.add_argument("source", help="a .zip of PDFs, or a folder of PDFs")
+    s.add_argument("--name", help="graph name (default: from the zip or folder name)")
+    s.add_argument("--graphs", help="graphs folder (default: graphs/ beside start.py, else ./graphs)")
+    s.add_argument("--topic")
+    s.set_defaults(fn=cmd_new)
+    s = sub.add_parser("serve", help="serve the home page and every graph in the graphs folder")
+    s.add_argument("--graphs")
+    s.add_argument("--port", type=int, default=8765)
+    s.add_argument("--no-open", action="store_true")
+    s.add_argument("--reviewer")
+    s.set_defaults(fn=cmd_serve)
     s = sub.add_parser("ingest", help="hash PDFs, detect DOI/PMID, list papers needing extraction")
     s.add_argument("papers", nargs="?", default="papers")
     s.set_defaults(fn=cmd_ingest)

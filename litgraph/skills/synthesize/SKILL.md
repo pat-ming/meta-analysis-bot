@@ -1,7 +1,7 @@
 ---
 name: synthesize
-description: Build a litgraph findings graph from a folder of papers for a systematic review. Reads every PDF, extracts findings with verified quotes, resolves entities and cohorts, judges how findings connect (replicates, contradicts, shares cohort, method confound, poolable), and writes connections.md, poolable CSVs and an interactive graph.html. Use when the user runs /litgraph:synthesize or asks to synthesize, map or connect the findings in a set of papers.
-argument-hint: "[papers-folder] [--topic \"review topic\"]"
+description: Build a litgraph findings graph from a .zip (or folder) of papers for a systematic review. Reads every PDF, extracts findings with verified quotes, resolves entities and cohorts, judges how findings connect (replicates, contradicts, shares cohort, method confound, poolable), and writes connections.md, poolable CSVs and an interactive graph into graphs/<name>/. Use when the user runs /litgraph:synthesize or asks to synthesize, map or connect the findings in a set of papers.
+argument-hint: "<papers.zip or folder> [--name graph-name] [--topic \"review topic\"]"
 allowed-tools: Bash(litgraph:*), Bash(${CLAUDE_PLUGIN_ROOT}/bin/litgraph:*), Read, Write, Edit, Agent, Workflow
 ---
 
@@ -12,27 +12,40 @@ Turn a folder of papers into a graph of findings and connections. You run the pi
 blocking, merging, reports, rendering) and prints a JSON summary after every command. You and the
 subagents only read and judge.
 
-Arguments: `$ARGUMENTS` (papers folder, default `papers/`; optional `--topic "..."`).
+Arguments: `$ARGUMENTS` (a `.zip` of PDFs or a folder of PDFs; optional `--name`, `--topic`).
+If no zip or folder was given, ask the user for one.
 
-- Run every command from the user's review project folder (the folder that holds the papers folder).
-  All outputs go to `./litgraph/` there.
+- Each systematic review is one **graph**: a folder `graphs/<name>/` holding `papers/` and
+  `litgraph/` (all outputs). Step 1 creates it and prints its path; call that path `<project>`.
+- Run every later command as `litgraph -C "<project>" …` so it acts on that graph.
 - `litgraph` is on PATH while this plugin is enabled. If the shell can't find it, use
   `${CLAUDE_PLUGIN_ROOT}/bin/litgraph` instead.
 - Plugin root, for paths you pass to workflows: `${CLAUDE_PLUGIN_ROOT}`
 - Read each command's JSON output before going on. Don't print whole project files into the
   conversation; read the parts you need.
 - Re-running is cheap: extractions are cached by PDF hash and judgments by finding content, so only
-  new or changed papers and pairs are processed. Never delete `litgraph/reviews.jsonl` or
-  `litgraph/positions.json`; they hold the human's work.
+  new or changed papers and pairs are processed. Never delete `reviews.jsonl` or
+  `positions.json` in a graph's `litgraph/` folder; they hold the human's work.
 
 Keep the user posted with one short line per stage (e.g. "Extracting 12 papers…", "Resolved 214
 entity names into 131 entities").
 
-## 1. Set up and ingest
+## 1. Create the graph and ingest
 
 ```bash
-litgraph init --topic "<topic>"          # topic: from --topic, else infer a short one from the folder or ask
-litgraph ingest <papers-folder>
+litgraph new "<zip or folder>" [--name <name>] [--topic "<topic>"]
+```
+
+This unzips the PDFs into `graphs/<name>/papers/` (the name defaults to the zip's file name) and
+prints `project`, `added`, `updated`, `unchanged`. If a graph with that name already exists, the new
+papers are added to it and unchanged ones are reused from the cache; tell the user which happened
+(`existing_graph`). If `total_pdfs` is 0, stop: the zip had no PDFs.
+
+Without `--topic`, the topic is the folder name. Once you've seen a few titles you can set a better
+one with `litgraph -C "<project>" init --topic "<topic>"`.
+
+```bash
+litgraph -C "<project>" ingest papers
 ```
 
 `ingest` reports `papers`, `to_extract`, `cached`, `changed`, and `text_backend`. If
@@ -41,10 +54,10 @@ litgraph ingest <papers-folder>
 
 ## 2. Extract (one paper-extractor per paper)
 
-If `to_extract` > 0, read `litgraph/work/todo.json` and run the bundled workflow:
+If `to_extract` > 0, read `<project>/litgraph/work/todo.json` and run the bundled workflow:
 
 - Workflow name `litgraph:extract-all`, args
-  `{"project": "<absolute project path>", "plugin_root": "${CLAUDE_PLUGIN_ROOT}", "papers": <the "papers" array from todo.json>}`
+  `{"project": "<project>", "plugin_root": "${CLAUDE_PLUGIN_ROOT}", "papers": <the "papers" array from todo.json>}`
 
 If the Workflow tool isn't available, dispatch the `litgraph:paper-extractor` subagent yourself
 with the Agent tool, up to 8 at a time in parallel, giving each the paper's fields from todo.json
@@ -53,29 +66,29 @@ plus the project folder and the schema path `${CLAUDE_PLUGIN_ROOT}/schemas/extra
 ## 3. Validate
 
 ```bash
-litgraph validate
+litgraph -C "<project>" validate
 ```
 
 This checks each extraction against the schema, verifies every quote against the PDF text on the
 stated page, flags implausible numbers, finalises paper IDs, works out research groups from author
-overlap, and writes `litgraph/findings.jsonl`.
+overlap, and writes `<project>/litgraph/findings.jsonl`.
 
 Look at `papers` in the summary. For any paper with status `invalid` or `missing`, or with many
-quote failures in `litgraph/work/validation_report.json`, re-dispatch the paper-extractor for those
+quote failures in `<project>/litgraph/work/validation_report.json`, re-dispatch the paper-extractor for those
 papers only, telling it what failed. Do one repair round, then move on and tell the user which papers
 still have problems. Don't edit extractions by hand except for trivial schema fixes.
 
 ## 4. Resolve entities, comparisons and cohorts (you do this yourself)
 
 ```bash
-litgraph resolve prepare
+litgraph -C "<project>" resolve prepare
 ```
 
-Read `litgraph/work/resolve_input.json`. It lists every entity name, every case/control group
+Read `<project>/litgraph/work/resolve_input.json`. It lists every entity name, every case/control group
 label, and every cohort mention, with counts, papers, example claims, automatic near-duplicate
 clusters, and any existing resolution (keep existing IDs stable).
 
-Write `litgraph/entities.json`:
+Write `<project>/litgraph/entities.json`:
 
 ```json
 {
@@ -92,7 +105,7 @@ Write `litgraph/entities.json`:
 }
 ```
 
-and `litgraph/cohorts.json`:
+and `<project>/litgraph/cohorts.json`:
 
 ```json
 {"cohorts": [{"cohort_id": "sprint", "name": "SPRINT", "aliases": ["Systolic Blood Pressure Intervention Trial"],
@@ -119,7 +132,7 @@ Entity resolution is the crux of the whole tool. Rules:
 Then:
 
 ```bash
-litgraph resolve apply
+litgraph -C "<project>" resolve apply
 ```
 
 Fix every item in `problems`, and add any `unresolved_entities` / `unresolved_groups` to the files,
@@ -128,7 +141,7 @@ then re-run until both are empty.
 ## 5. Connect (one edge-judge per batch)
 
 ```bash
-litgraph candidates
+litgraph -C "<project>" candidates
 ```
 
 Code pairs findings across papers that share an entity, a related entity or an identical baseline
@@ -136,9 +149,9 @@ table, and writes judge batches; caution edges for shared cohorts and research g
 code directly. (Add `--include-comparison` to also pair different entities measured in the same
 comparison; this costs many more pairs, so only do it if the user asks.)
 
-If `to_judge` > 0, read `litgraph/work/candidates/index.json` and run the workflow
+If `to_judge` > 0, read `<project>/litgraph/work/candidates/index.json` and run the workflow
 `litgraph:judge-all` with args
-`{"project": "<absolute project path>", "plugin_root": "${CLAUDE_PLUGIN_ROOT}", "batches": <the "batches" array>}`.
+`{"project": "<project>", "plugin_root": "${CLAUDE_PLUGIN_ROOT}", "batches": <the "batches" array>}`.
 Without the Workflow tool, dispatch `litgraph:edge-judge` subagents yourself (up to 8 in parallel),
 one per batch, with the batch path, out_path, project folder and the schema path
 `${CLAUDE_PLUGIN_ROOT}/schemas/judgments.schema.json`.
@@ -146,7 +159,7 @@ one per batch, with the batch path, out_path, project folder and the schema path
 Then:
 
 ```bash
-litgraph edges merge
+litgraph -C "<project>" edges merge
 ```
 
 If `batches_without_output` is not empty, re-run the judge for those batches once, then merge again.
@@ -154,34 +167,40 @@ If `batches_without_output` is not empty, re-run the judge for those batches onc
 ## 6. Report
 
 ```bash
-litgraph report
+litgraph -C "<project>" report
 ```
 
-Read `litgraph/reports/connections.md` and `litgraph/reports/report_data.json`. Write a narrative
+Read `<project>/litgraph/reports/connections.md` and `<project>/litgraph/reports/report_data.json`. Write a narrative
 summary of 300–600 words in the voice of the review's results section: which findings replicate
 across independent groups, the overlap rates ("4 of 95 miRNAs were reported by more than one
 study"), the main contradiction clusters and their most likely methodological explanations, the
 independence problems (shared cohorts, single-group findings), and which sets are ready to pool.
 Cite papers as "Author Year" and only state what the tables and edges support. Save it to
-`litgraph/work/narrative.md`, then:
+`<project>/litgraph/work/narrative.md`, then:
 
 ```bash
-litgraph report --narrative litgraph/work/narrative.md
+litgraph -C "<project>" report --narrative "<project>/litgraph/work/narrative.md"
 ```
 
 ## 7. Build and hand off
 
 ```bash
-litgraph build
+litgraph -C "<project>" build
 ```
 
 Finish with a short summary for the user: papers, findings, quote-verification rate, edges by
 polarity, the two or three most important connections, and any papers that still have problems.
-Then tell them how to explore and review the graph:
+Then tell them how to explore and review the graph. From the folder that holds `graphs/` (the
+repository root, next to `start.py`), run:
 
-- `open litgraph/graph.html` for a read-only view, or
-- `litgraph view` in a terminal to review edges and save decisions. Outside Claude Code the
-  command isn't on PATH; give them the full path: `${CLAUDE_PLUGIN_ROOT}/bin/litgraph view`
-  (run from the project folder).
+```bash
+python3 start.py
+```
 
-Don't start `litgraph view` yourself: it runs a server until stopped.
+That opens a home page at `http://127.0.0.1:8765/` listing every graph; this one is at
+`http://127.0.0.1:8765/g/<name>/`. If `start.py` isn't there (the plugin was installed rather than
+loaded from the repository), use `${CLAUDE_PLUGIN_ROOT}/bin/litgraph serve` instead.
+`<project>/litgraph/graph.html` also opens on its own as a read-only copy that can be shared.
+
+Don't start the server yourself: it runs until stopped. The home page updates by itself, so if the
+user already has it open they'll see the graph appear as the pipeline progresses.

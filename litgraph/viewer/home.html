@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>litgraph</title>
+<script>try { const t = localStorage.getItem("litgraph:theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<style>
+:root {
+  --bg: #f4f5fb; --panel: rgba(255,255,255,.72); --panel-solid: #ffffff; --panel-2: rgba(240,242,250,.85); --line: rgba(120,130,170,.18);
+  --text: #171a2c; --muted: #6b7190; --accent: #6d5dfc; --accent-2: #c04df9; --accent-3: #22c1ee;
+  --grad: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, #ff6fa8 100%);
+  --supports: #16c78a; --conflicts: #ff4d6d; --caution: #ffb020; --neutral: #9aa3c2; --warn: #f59e0b; --ok: #16c78a;
+  --shadow: 0 10px 40px -12px rgba(76,60,190,.28), 0 2px 6px rgba(30,30,80,.06); --chip: rgba(109,93,252,.10);
+  --glow-a: rgba(124,92,255,.22); --glow-b: rgba(34,193,238,.18); --glow-c: rgba(255,111,168,.16); --track: rgba(120,130,170,.16);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0c16; --panel: rgba(22,24,42,.62); --panel-solid: #161828; --panel-2: rgba(36,39,66,.7); --line: rgba(150,160,230,.14);
+    --text: #eceefb; --muted: #9298bd; --accent: #8b7bff; --accent-2: #d16bff; --accent-3: #3fd3ff;
+    --supports: #2ee6a0; --conflicts: #ff5f7e; --caution: #ffc24b; --neutral: #7d86ad; --warn: #ffc24b; --ok: #2ee6a0;
+    --shadow: 0 10px 40px -10px rgba(0,0,0,.6), 0 0 0 1px rgba(140,130,255,.06); --chip: rgba(139,123,255,.16);
+    --glow-a: rgba(124,92,255,.30); --glow-b: rgba(34,193,238,.18); --glow-c: rgba(255,90,160,.16); --track: rgba(150,160,230,.14);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0c16; --panel: rgba(22,24,42,.62); --panel-solid: #161828; --panel-2: rgba(36,39,66,.7); --line: rgba(150,160,230,.14);
+  --text: #eceefb; --muted: #9298bd; --accent: #8b7bff; --accent-2: #d16bff; --accent-3: #3fd3ff;
+  --supports: #2ee6a0; --conflicts: #ff5f7e; --caution: #ffc24b; --neutral: #7d86ad; --warn: #ffc24b; --ok: #2ee6a0;
+  --shadow: 0 10px 40px -10px rgba(0,0,0,.6), 0 0 0 1px rgba(140,130,255,.06); --chip: rgba(139,123,255,.16);
+  --glow-a: rgba(124,92,255,.30); --glow-b: rgba(34,193,238,.18); --glow-c: rgba(255,90,160,.16); --track: rgba(150,160,230,.14);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  color: var(--text); font: 14px/1.5 Inter, "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased; background-color: var(--bg); min-height: 100vh;
+  background-image:
+    radial-gradient(900px 600px at 8% -10%, var(--glow-a), transparent 60%),
+    radial-gradient(800px 600px at 105% 10%, var(--glow-b), transparent 60%),
+    radial-gradient(900px 700px at 60% 120%, var(--glow-c), transparent 60%);
+  background-attachment: fixed;
+}
+button, input { font: inherit; color: inherit; }
+button { background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; cursor: pointer;
+  transition: box-shadow .2s, border-color .2s, transform .12s; }
+button:hover { border-color: color-mix(in srgb, var(--accent) 45%, transparent); box-shadow: 0 4px 14px -6px var(--accent); transform: translateY(-1px); }
+code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--chip); padding: 1px 6px; border-radius: 6px; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 60px; }
+.top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 750; font-size: 20px; letter-spacing: -.02em; }
+.logo { width: 30px; height: 30px; border-radius: 10px; background: var(--grad); box-shadow: 0 6px 18px -6px var(--accent-2); }
+.brand .name { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grow { flex: 1; }
+#search { width: 260px; max-width: 100%; padding: 8px 14px 8px 34px; border: 1px solid var(--line); border-radius: 999px; outline: none;
+  background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%238a90b4' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 12px center;
+  backdrop-filter: blur(14px); }
+#search:focus { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+.seg { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; backdrop-filter: blur(14px); }
+.seg button { border: 0; background: transparent; padding: 4px 12px; box-shadow: none; transform: none; }
+.seg button.on { background: var(--grad); color: #fff; font-weight: 600; box-shadow: 0 4px 12px -5px var(--accent-2); }
+
+.hero { margin: 34px 0 26px; }
+.hero h1 { font-size: 34px; line-height: 1.15; letter-spacing: -.03em; margin: 0 0 8px; font-weight: 750; }
+.hero h1 span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { color: var(--muted); margin: 0; }
+.totals { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.total { background: var(--panel); backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; box-shadow: var(--shadow); }
+.total b { font-size: 18px; display: block; letter-spacing: -.02em; }
+.total span { color: var(--muted); font-size: 12px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.card { position: relative; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: inherit;
+  background: var(--panel); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); overflow: hidden;
+  transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease; }
+.card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--grad); opacity: .85; }
+.card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: 0 18px 50px -16px color-mix(in srgb, var(--accent) 55%, transparent); }
+.card h2 { margin: 0; font-size: 17px; letter-spacing: -.015em; line-height: 1.3; }
+.card .folder { color: var(--muted); font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.head { display: flex; align-items: flex-start; gap: 10px; }
+.head > div { flex: 1; min-width: 0; }
+.pill { flex: none; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  background: color-mix(in srgb, var(--warn) 16%, transparent); color: color-mix(in srgb, var(--warn) 75%, var(--text)); }
+.pill.ready { background: color-mix(in srgb, var(--ok) 16%, transparent); color: color-mix(in srgb, var(--ok) 70%, var(--text)); }
+.pill.error { background: color-mix(in srgb, var(--conflicts) 16%, transparent); color: var(--conflicts); }
+.pill .pulse { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 6px; vertical-align: 1px;
+  animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { background: var(--panel-2); border-radius: 12px; padding: 7px 10px; }
+.stat b { display: block; font-size: 18px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 11.5px; }
+.bar { display: flex; height: 6px; border-radius: 6px; overflow: hidden; background: var(--track); }
+.bar i { display: block; height: 100%; }
+.legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.legend span::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; background: var(--c); vertical-align: 1px; }
+.row { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.progress { height: 6px; border-radius: 6px; background: var(--track); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--grad); border-radius: 6px; }
+.foot { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-top: auto; }
+.foot .open { margin-left: auto; color: var(--accent); font-weight: 600; }
+.foot .sub { color: var(--muted); text-decoration: underline; cursor: pointer; }
+.foot .sub:hover { color: var(--accent); }
+
+.empty { text-align: center; padding: 50px 20px; background: var(--panel); backdrop-filter: blur(18px); border: 1px solid var(--line);
+  border-radius: 24px; box-shadow: var(--shadow); }
+.empty .tile { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 20px; background: var(--grad); box-shadow: 0 14px 34px -10px var(--accent-2); }
+.empty h2 { margin: 0 0 6px; letter-spacing: -.02em; }
+.empty p { color: var(--muted); margin: 0 0 18px; }
+.steps { display: inline-flex; flex-direction: column; gap: 10px; text-align: left; }
+.steps div { display: flex; gap: 10px; align-items: baseline; }
+.steps .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--grad); color: #fff; font-size: 12px; font-weight: 700;
+  display: inline-grid; place-items: center; }
+.none { color: var(--muted); text-align: center; padding: 30px; }
+.foot-note { margin-top: 28px; color: var(--muted); font-size: 12px; text-align: center; }
+
+@media (max-width: 600px) {
+  .wrap { padding: 18px 16px 40px; }
+  .hero h1 { font-size: 26px; }
+  #search { width: 100%; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="logo"></span><span class="name">litgraph</span></div>
+    <div class="grow"></div>
+    <input id="search" type="search" placeholder="Search graphs…" autocomplete="off">
+    <div class="seg" id="sort"><button data-v="recent">Recent</button><button data-v="name">Name</button><button data-v="size">Size</button></div>
+    <button id="theme" title="Switch between system, light and dark theme">◐ System</button>
+  </div>
+
+  <div class="hero">
+    <h1>Your <span>evidence graphs</span></h1>
+    <p>Each graph is one systematic review: its papers, findings and how they connect.</p>
+    <div class="totals" id="totals"></div>
+  </div>
+
+  <div id="list"></div>
+  <div class="foot-note" id="where"></div>
+</div>
+
+<script id="home-data" type="application/json">__LITGRAPH_HOME__</script>
+<script>
+"use strict";
+let DATA = JSON.parse(document.getElementById("home-data").textContent);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const num = n => (n ?? 0).toLocaleString();
+const store = {
+  get(k, d) { try { return localStorage.getItem(k) ?? d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+};
+let sort = store.get("litgraph:home-sort", "recent");
+let query = "";
+
+function ago(iso) {
+  if (!iso) return "";
+  const s = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (s < 90) return "just now";
+  if (s < 3600) return `${Math.round(s / 60)} min ago`;
+  if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+  if (s < 86400 * 30) return `${Math.round(s / 86400)} d ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
+function card(g) {
+  const href = `/g/${encodeURIComponent(g.name)}/`;
+  const ready = g.stage === "ready";
+  const pill = `<span class="pill ${ready ? "ready" : g.stage === "error" ? "error" : ""}">${ready ? "" : g.stage === "error" ? "" : '<span class="pulse"></span>'}${esc(ready ? "Ready" : g.stage_label)}</span>`;
+  const pol = g.polarity || {};
+  const totalE = Object.values(pol).reduce((a, b) => a + b, 0);
+  const seg = k => totalE ? `<i style="width:${(100 * (pol[k] || 0) / totalE).toFixed(1)}%;background:var(--${k})"></i>` : "";
+  const polHtml = totalE ? `<div><div class="bar">${seg("supports")}${seg("conflicts")}${seg("caution")}${seg("neutral")}</div>
+    <div class="legend"><span style="--c:var(--supports)">${pol.supports || 0} supports</span><span style="--c:var(--conflicts)">${pol.conflicts || 0} conflicts</span>
+    <span style="--c:var(--caution)">${pol.caution || 0} caution</span><span style="--c:var(--neutral)">${pol.neutral || 0} neutral</span></div></div>` : "";
+  const pct = g.edges ? Math.round(100 * (g.reviewed || 0) / g.edges) : 0;
+  const review = g.edges ? `<div><div class="row"><span>Reviewed</span><span>${num(g.reviewed)} / ${num(g.edges)} · ${pct}%</span></div>
+    <div class="progress"><i style="width:${pct}%"></i></div></div>` : "";
+  const bits = [];
+  if (g.years) bits.push(g.years[0] === g.years[1] ? g.years[0] : `${g.years[0]}–${g.years[1]}`);
+  if (g.quotes_verified != null) bits.push(`${Math.round(100 * g.quotes_verified)}% quotes verified`);
+  bits.push(`updated ${ago(g.updated)}`);
+  const report = g.report ? `<span class="sub" role="link" tabindex="0" data-report="${href}report">Report</span>` : "";
+  return `<a class="card" href="${href}">
+    <div class="head"><div><h2>${esc(g.topic)}</h2><div class="folder">graphs/${esc(g.name)}</div></div>${pill}</div>
+    <div class="stats"><div class="stat"><b>${num(g.papers)}</b><span>papers</span></div>
+      <div class="stat"><b>${num(g.findings)}</b><span>findings</span></div>
+      <div class="stat"><b>${num(g.edges)}</b><span>connections</span></div></div>
+    ${polHtml}${review}
+    <div class="foot"><span>${esc(bits.join(" · "))}</span>${report}<span class="open">Open →</span></div></a>`;
+}
+
+function render() {
+  const gs = DATA.graphs.filter(g => !query || `${g.topic} ${g.name}`.toLowerCase().includes(query));
+  const by = { recent: (a, b) => (b.updated || "").localeCompare(a.updated || ""),
+    name: (a, b) => a.topic.localeCompare(b.topic), size: (a, b) => (b.papers || 0) - (a.papers || 0) };
+  gs.sort(by[sort] || by.recent);
+  document.querySelectorAll("#sort button").forEach(b => b.classList.toggle("on", b.dataset.v === sort));
+  const all = DATA.graphs;
+  document.getElementById("totals").innerHTML = all.length ? [
+    [all.length, all.length === 1 ? "graph" : "graphs"], [all.reduce((s, g) => s + (g.papers || 0), 0), "papers"],
+    [all.reduce((s, g) => s + (g.findings || 0), 0), "findings"], [all.reduce((s, g) => s + (g.edges || 0), 0), "connections"],
+  ].map(([n, l]) => `<div class="total"><b>${num(n)}</b><span>${l}</span></div>`).join("") : "";
+  const list = document.getElementById("list");
+  if (!all.length) {
+    list.innerHTML = `<div class="empty"><div class="tile"></div><h2>No graphs yet</h2>
+      <p>Make one from a zip of papers. It shows up here automatically.</p>
+      <div class="steps">
+        <div><span class="n">1</span><span>Start Claude Code with the plugin: <code>claude --plugin-dir ./litgraph</code></span></div>
+        <div><span class="n">2</span><span>Give it your papers: <code>/litgraph:synthesize ~/Downloads/my-review.zip</code></span></div>
+        <div><span class="n">3</span><span>Come back here while it reads them.</span></div>
+      </div></div>`;
+  } else if (!gs.length) {
+    list.innerHTML = `<div class="none">No graphs match “${esc(query)}”.</div>`;
+  } else {
+    list.innerHTML = `<div class="grid">${gs.map(card).join("")}</div>`;
+  }
+  document.getElementById("where").textContent = `Reading ${DATA.graphs_dir}`;
+}
+
+async function refresh() {
+  if (document.hidden) return;
+  try {
+    const r = await fetch("/api/graphs", { cache: "no-store" });
+    if (r.ok) { DATA = await r.json(); render(); }
+  } catch (e) {}
+}
+
+// theme
+const THEMES = { system: "◐ System", light: "☀ Light", dark: "☾ Dark" };
+let theme = store.get("litgraph:theme", "system");
+function applyTheme(t) {
+  theme = THEMES[t] ? t : "system";
+  if (theme === "system") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = theme;
+  store.set("litgraph:theme", theme);
+  document.getElementById("theme").textContent = THEMES[theme];
+}
+document.getElementById("theme").addEventListener("click", () => {
+  const order = Object.keys(THEMES);
+  applyTheme(order[(order.indexOf(theme) + 1) % order.length]);
+});
+document.querySelectorAll("#sort button").forEach(b => b.addEventListener("click", () => {
+  sort = b.dataset.v; store.set("litgraph:home-sort", sort); render();
+}));
+document.getElementById("search").addEventListener("input", ev => { query = ev.target.value.trim().toLowerCase(); render(); });
+document.addEventListener("visibilitychange", refresh);
+document.getElementById("list").addEventListener("click", ev => {
+  const r = ev.target.closest("[data-report]");
+  if (!r) return;
+  ev.preventDefault(); ev.stopPropagation();
+  window.open(r.dataset.report, "_blank", "noopener");
+});
+
+applyTheme(theme);
+render();
+setInterval(refresh, 8000);
+</script>
+</body>
+</html>

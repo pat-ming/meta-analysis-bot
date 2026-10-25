@@ -14,7 +14,7 @@ DATA_SLOT = "__LITGRAPH_DATA__"
 SCRIPT_SLOT = "/*__LITGRAPH_VENDOR__*/"
 
 
-def graph_data(project, live: bool = False) -> dict:
+def graph_data(project, live: bool = False, base: str = "", home: str | None = None) -> dict:
     findings = read_jsonl(project.findings)
     corpus = read_json(project.corpus, [])
     ents = read_json(project.entities, {}) or {}
@@ -40,7 +40,8 @@ def graph_data(project, live: bool = False) -> dict:
     built = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     return {
         "meta": {"topic": cfg.get("topic") or project.root.name, "built_at": built,
-                 "pipeline_version": PIPELINE_VERSION, "live": live,
+                 "pipeline_version": PIPELINE_VERSION, "live": live, "base": base, "home": home,
+                 "name": project.root.name,
                  "counts": {"papers": len(papers), "findings": len(findings), "edges": len(edges)}},
         "papers": papers, "findings": findings, "edges": edges,
         "entities": ents.get("entities", []), "groups": ents.get("groups", []), "cohorts": cohorts,
@@ -57,9 +58,9 @@ def _vendor() -> str:
     return "\n;\n".join(parts)
 
 
-def render(project, live: bool = False) -> str:
+def render(project, live: bool = False, base: str = "", home: str | None = None) -> str:
     template = (VIEWER_DIR / "template.html").read_text(encoding="utf-8")
-    data = json.dumps(graph_data(project, live), ensure_ascii=False)
+    data = json.dumps(graph_data(project, live, base, home), ensure_ascii=False)
     data = data.replace("</", "<\\/").replace("<!--", "<\\!--")
     return template.replace(SCRIPT_SLOT, _vendor(), 1).replace(DATA_SLOT, data, 1)
 

@@ -222,6 +222,7 @@ class TestPipeline(unittest.TestCase):
         try:
             html = urllib.request.urlopen(base + "/").read().decode()
             self.assertIn('"live": true', html)
+            self.assertIn('"home": null', html)  # single-project mode has no home page
             pdf = urllib.request.urlopen(base + "/pdf/lattekivi2022").read()
             self.assertTrue(pdf.startswith(b"%PDF"))
 
@@ -262,6 +263,70 @@ class TestPipeline(unittest.TestCase):
         self.assertEqual(st["status"], "stale")
         code, cand = run_cli(self.tmp, "candidates")
         self.assertGreater(cand["to_judge"], 0)  # changed findings get re-judged
+
+
+@unittest.skipIf(pdftext.backend() is None, "no PDF text backend (install pymupdf or poppler)")
+class TestHub(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="litgraph-hub-"))
+        src = self.tmp / "src"
+        src.mkdir()
+        for name, pages in fixture.PAPERS.items():
+            fixture.make_pdf(src / name, pages)
+        import zipfile
+        self.zip = self.tmp / "My PsA Review.zip"
+        with zipfile.ZipFile(self.zip, "w") as zf:
+            zf.write(src / "lattekivi2022.pdf", "Review/lattekivi2022.pdf")
+            zf.write(src / "pasquali2020.pdf", "Review/sub/pasquali2020.pdf")
+            zf.write(src / "pasquali2020.pdf", "__MACOSX/Review/._pasquali2020.pdf")
+            zf.writestr("../../escape.pdf", (src / "10.1234_abc.2023.pdf").read_bytes())
+            zf.writestr("Review/notes.txt", "not a paper")
+            zf.writestr("Review/fake.pdf", b"not really a pdf")
+        self.graphs = self.tmp / "graphs"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_new_from_zip(self):
+        from litgraph_py import hub
+        r = hub.new(str(self.zip), graphs_dir=str(self.graphs))
+        self.assertEqual(r["graph"], "my-psa-review")
+        papers = sorted(p.name for p in (self.graphs / "my-psa-review" / "papers").iterdir())
+        # OS junk, path-traversal entries, non-PDFs and fake PDFs are all skipped; nested folders flattened
+        self.assertEqual(papers, ["lattekivi2022.pdf", "pasquali2020.pdf"])
+        self.assertFalse((self.tmp / "escape.pdf").exists())
+        self.assertFalse(r["existing_graph"])
+        again = hub.new(str(self.zip), graphs_dir=str(self.graphs))
+        self.assertTrue(again["existing_graph"])
+        self.assertEqual((again["added"], again["unchanged"]), (0, 2))
+
+    def test_listing_and_hub_server(self):
+        from litgraph_py import hub, server
+        from http.server import ThreadingHTTPServer
+        r = hub.new(str(self.zip), graphs_dir=str(self.graphs))
+        run_cli(r["project"], "ingest", "papers")
+        (self.graphs / ".hidden").mkdir()
+        graphs = hub.list_graphs(self.graphs)
+        self.assertEqual([g["name"] for g in graphs], ["my-psa-review"])
+        self.assertEqual((graphs[0]["papers"], graphs[0]["stage"]), (2, "extracting"))
+
+        httpd = ThreadingHTTPServer(("127.0.0.1", 0), server.make_handler(server.Site(graphs_dir=self.graphs)))
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
+        base = f"http://127.0.0.1:{httpd.server_address[1]}"
+        get = lambda path: urllib.request.urlopen(base + path)
+        try:
+            home = get("/").read().decode()
+            self.assertIn("my-psa-review", home)
+            self.assertNotIn("__LITGRAPH_HOME__", home)
+            self.assertEqual(json.loads(get("/api/graphs").read())["graphs"][0]["name"], "my-psa-review")
+            self.assertEqual(get("/g/my-psa-review").geturl(), base + "/g/my-psa-review/")  # redirect adds the slash
+            self.assertIn("Extracting papers", get("/g/my-psa-review/").read().decode())  # pending page
+            self.assertTrue(get("/g/my-psa-review/pdf/lattekivi2022").read().startswith(b"%PDF"))
+            for bad in ("/g/../graphs/", "/g/nope/", "/g/%2e%2e/"):
+                with self.assertRaises(urllib.error.HTTPError, msg=bad):
+                    get(bad)
+        finally:
+            httpd.shutdown()
 
 
 if __name__ == "__main__":
