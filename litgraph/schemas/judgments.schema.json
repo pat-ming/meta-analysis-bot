@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "judgments.schema.json",
+  "title": "Judgments",
+  "description": "What the edge-judge writes for one candidate batch: zero or more edges per pair.",
+  "type": "object",
+  "required": ["batch_id", "judgments"],
+  "properties": {
+    "batch_id": {"type": "string"},
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pair_id", "edges"],
+        "properties": {
+          "pair_id": {"type": "string"},
+          "edges": {"type": "array", "items": {"$ref": "edge.schema.json"}},
+          "no_edge_reason": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

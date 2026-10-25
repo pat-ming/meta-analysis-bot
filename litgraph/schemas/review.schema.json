@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "review.schema.json",
+  "title": "Review",
+  "description": "One human decision on an edge, appended to reviews.jsonl by the viewer. The latest event per edge_key wins.",
+  "type": "object",
+  "required": ["edge_key", "decision", "timestamp"],
+  "properties": {
+    "edge_key": {"type": "string", "description": "source|target|type, the stable identity of the machine edge"},
+    "edge_id": {"type": "string"},
+    "decision": {"enum": ["accept", "reject", "retype", "note", "reset"]},
+    "new_type": {"type": ["string", "null"]},
+    "note": {"type": ["string", "null"]},
+    "reviewer": {"type": ["string", "null"]},
+    "finding_hashes": {"type": "object", "description": "Content hashes of both findings when the decision was made; a change marks the review stale."},
+    "timestamp": {"type": "string"}
+  }
+}

@@ -1,0 +1,11 @@
+
+=== PAGE 1 ===
+Plasma extracellular vesicle microRNAs in psoriatic disease
+Pasquali L, Svedbom A, Srivastava A, Stahle M
+PMID: 31234567
+
+=== PAGE 2 ===
+Results
+Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis (p < 0.001).
+In contrast, miR-192-5p was decreased in PsA versus PsC (p = 0.02).
+Table 3. miR-26a-5p PsA 3.8 +/- 0.3 (SEM) n=30; PsC 2.7 +/- 0.25 (SEM) n=28

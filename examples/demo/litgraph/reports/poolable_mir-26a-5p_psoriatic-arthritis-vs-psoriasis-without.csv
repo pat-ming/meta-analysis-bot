@@ -1,0 +1,3 @@
+study,n1,mean1,sd1,n2,mean2,sd2,stat_type_original,converted,notes,finding_id
+Pasquali 2020,30,3.8,1.64317,28,2.7,1.32288,mean_sem,SEM→SD: sd = sem × √n,,pasquali2020-f1
+Lattekivi 2022,25,4.1,1.2,25,2.9,1,mean_sd,no,,lattekivi2022-f1

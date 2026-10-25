@@ -1,0 +1,12 @@
+
+=== PAGE 1 ===
+Profiling serum extracellular vesicles in psoriasis and psoriatic arthritis
+Lattekivi F, Kingo K, Salumets A, Koks S
+doi: 10.3390/ijms23010001
+Patients were recruited from the PsoBank cohort at Tartu University Hospital.
+
+=== PAGE 2 ===
+Results
+EV miR-26a-5p was significantly higher in PsA than in PsV patients (p = 0.004).
+Serum EV miR-192-5p was elevated in PsA compared with PsV (p = 0.01).
+Table 2. miR-26a-5p PsA 4.1 (1.2) n=25; PsV 2.9 (1.0) n=25

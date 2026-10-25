@@ -1,0 +1,128 @@
+{
+  "paper_id": "lattekivi2022",
+  "file_hash": "sha256:97377d9f4176c37dc084aef675e4344f162ff98751e2c29650456450c5511314",
+  "extractor_version": "test",
+  "paper": {
+    "title": "Profiling serum extracellular vesicles in psoriasis and psoriatic arthritis",
+    "authors": [
+      "Lattekivi F",
+      "Kingo K",
+      "Salumets A",
+      "Koks S"
+    ],
+    "year": 2022,
+    "journal": "Int J Mol Sci",
+    "doi": "10.3390/ijms23010001",
+    "suggested_paper_id": "lattekivi2022"
+  },
+  "cohorts": [
+    {
+      "name": "PsoBank",
+      "evidence": [
+        {
+          "quote": "Patients were recruited from the PsoBank cohort",
+          "page": 1
+        }
+      ]
+    }
+  ],
+  "baseline": [
+    {
+      "label": "PsA",
+      "n": 25,
+      "age_mean": 48.2,
+      "pct_female": 52
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "lattekivi2022-f1",
+      "claim": "EV miR-26a-5p is higher in PsA than in PsV.",
+      "finding_type": "group_difference",
+      "entity": "miR-26a-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsV",
+        "subgroup": null
+      },
+      "direction": "up",
+      "significant": true,
+      "stats": {
+        "groups": [
+          {
+            "label": "PsA",
+            "n": 25,
+            "value": 4.1,
+            "spread": 1.2,
+            "stat_type": "mean_sd"
+          },
+          {
+            "label": "PsV",
+            "n": 25,
+            "value": 2.9,
+            "spread": 1.0,
+            "stat_type": "mean_sd"
+          }
+        ],
+        "effect": null,
+        "p_value": 0.004
+      },
+      "methods": {
+        "biofluid": "serum",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+          "page": 2,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    },
+    {
+      "finding_id": "lattekivi2022-f2",
+      "claim": "Serum EV miR-192-5p is higher in PsA than in PsV.",
+      "finding_type": "group_difference",
+      "entity": "hsa-miR-192-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsV",
+        "subgroup": null
+      },
+      "direction": "up",
+      "significant": true,
+      "stats": {
+        "groups": [],
+        "effect": null,
+        "p_value": 0.01
+      },
+      "methods": {
+        "biofluid": "serum",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "Serum EV miR-192-5p was elevated in PsA compared with PsV",
+          "page": 2,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    }
+  ]
+}

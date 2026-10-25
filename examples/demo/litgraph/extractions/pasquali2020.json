@@ -1,0 +1,109 @@
+{
+  "paper_id": "pasquali2020",
+  "file_hash": "sha256:2e735eeb32f768ef7e0db33663ff053734ead8e287cb7508cf9f3ac35eacf9b6",
+  "extractor_version": "test",
+  "paper": {
+    "title": "Plasma extracellular vesicle microRNAs in psoriatic disease",
+    "authors": [
+      "Pasquali L",
+      "Svedbom A",
+      "Srivastava A",
+      "Stahle M"
+    ],
+    "year": 2020,
+    "pmid": "31234567"
+  },
+  "cohorts": [],
+  "baseline": null,
+  "findings": [
+    {
+      "finding_id": "pasquali2020-f1",
+      "claim": "Plasma EV miR-26a-5p is higher in PsA than in cutaneous psoriasis.",
+      "finding_type": "group_difference",
+      "entity": "miRNA-26a-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsC",
+        "subgroup": null
+      },
+      "direction": "up",
+      "significant": true,
+      "stats": {
+        "groups": [
+          {
+            "label": "PsA",
+            "n": 30,
+            "value": 3.8,
+            "spread": 0.3,
+            "stat_type": "mean_sem"
+          },
+          {
+            "label": "PsC",
+            "n": 28,
+            "value": 2.7,
+            "spread": 0.25,
+            "stat_type": "mean_sem"
+          }
+        ],
+        "effect": null,
+        "p_value": "<0.001"
+      },
+      "methods": {
+        "biofluid": "plasma",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+          "page": 2,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    },
+    {
+      "finding_id": "pasquali2020-f2",
+      "claim": "miR-192-5p is lower in PsA than in PsC.",
+      "finding_type": "group_difference",
+      "entity": "miR-192-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsC",
+        "subgroup": null
+      },
+      "direction": "down",
+      "significant": true,
+      "stats": {
+        "groups": [],
+        "effect": null,
+        "p_value": 0.02
+      },
+      "methods": {
+        "biofluid": "plasma",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "In contrast, miR-192-5p was decreased in PsA versus PsC",
+          "page": 1,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    }
+  ]
+}

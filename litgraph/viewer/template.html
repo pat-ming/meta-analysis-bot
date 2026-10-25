@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>litgraph</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --panel-2: #f1f1ee; --line: #e2e1dc; --text: #1f2328; --muted: #6a6f76;
+  --accent: #3b6fd8; --supports: #2e9d5b; --conflicts: #d64545; --caution: #d99a1e; --neutral: #8a8f98;
+  --up: #d1495b; --down: #2f80c9; --none: #9aa0a6; --canvas: #fbfbfa; --shadow: 0 4px 18px rgba(0,0,0,.08);
+  --chip: #eceae4; --warn: #b7791f; --ok: #2e9d5b; --node-label: #3a3f45;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --panel: #1c1f23; --panel-2: #23272c; --line: #30353b; --text: #e6e6e3; --muted: #9aa0a6;
+    --accent: #7aa2f7; --supports: #4cc27e; --conflicts: #f06b6b; --caution: #f0b545; --neutral: #8d939b;
+    --up: #f07a8a; --down: #6fb3f0; --none: #7c838b; --canvas: #181a1d; --shadow: 0 4px 18px rgba(0,0,0,.4);
+    --chip: #2a2f35; --warn: #f0b545; --ok: #4cc27e; --node-label: #c9ccd0;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --panel: #1c1f23; --panel-2: #23272c; --line: #30353b; --text: #e6e6e3; --muted: #9aa0a6;
+  --accent: #7aa2f7; --supports: #4cc27e; --conflicts: #f06b6b; --caution: #f0b545; --neutral: #8d939b;
+  --up: #f07a8a; --down: #6fb3f0; --none: #7c838b; --canvas: #181a1d; --shadow: 0 4px 18px rgba(0,0,0,.4);
+  --chip: #2a2f35; --warn: #f0b545; --ok: #4cc27e; --node-label: #c9ccd0;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+a { color: var(--accent); }
+
+/* top bar */
+header { background: var(--panel); border-bottom: 1px solid var(--line); padding: 8px 14px; display: flex; flex-direction: column; gap: 6px; }
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.brand { font-weight: 650; font-size: 14px; }
+.brand .counts { color: var(--muted); font-weight: 400; }
+.grow { flex: 1; }
+#search { width: 260px; max-width: 100%; padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; background: transparent; padding: 3px 10px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button.on { background: var(--accent); color: #fff; }
+.lbl { color: var(--muted); }
+.menu { position: relative; }
+.menu > .pop { display: none; position: absolute; right: 0; top: 110%; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; box-shadow: var(--shadow); padding: 6px; z-index: 30; min-width: 170px; }
+.menu.open > .pop { display: flex; flex-direction: column; gap: 4px; }
+.menu .pop button { text-align: left; background: transparent; border: 0; }
+.menu .pop button:hover { background: var(--panel-2); }
+
+/* main */
+main { display: grid; grid-template-columns: 240px 1fr 360px; min-height: 0; }
+aside { background: var(--panel); overflow-y: auto; min-height: 0; }
+#filters { border-right: 1px solid var(--line); padding: 10px 12px; }
+#details { border-left: 1px solid var(--line); padding: 12px 14px; }
+h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; font-weight: 600; }
+h3:first-child { margin-top: 2px; }
+.opt { display: flex; align-items: center; gap: 7px; padding: 2px 0; cursor: pointer; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+.ms { margin: 4px 0; }
+.ms > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; padding: 4px 8px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); }
+.ms > summary::-webkit-details-marker { display: none; }
+.ms > summary .v { color: var(--muted); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ms .box { border: 1px solid var(--line); border-top: 0; border-radius: 0 0 6px 6px; padding: 6px; max-height: 220px; overflow-y: auto; }
+.ms .box input[type=text] { width: 100%; padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); margin-bottom: 4px; }
+.ms .box .opt { font-size: 12px; }
+.ms .box .acts { display: flex; gap: 6px; margin-bottom: 4px; }
+.ms .box .acts button { padding: 1px 6px; font-size: 11px; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+select.full { width: 100%; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); }
+
+#stage { position: relative; min-width: 0; min-height: 0; background: var(--canvas); }
+#cy { position: absolute; inset: 0; }
+#legend { position: absolute; left: 10px; bottom: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 7px 10px; font-size: 11px; color: var(--muted); box-shadow: var(--shadow); display: grid; grid-template-columns: auto auto; gap: 2px 14px; }
+#legend .k { display: flex; align-items: center; gap: 6px; }
+#legend .ln { width: 18px; height: 0; border-top: 3px solid; display: inline-block; }
+#legend .ln.dash { border-top-style: dashed; }
+#legend svg { width: 12px; height: 12px; }
+#legend .hd { grid-column: 1 / -1; font-weight: 600; color: var(--text); }
+#legend.min .body { display: none; }
+#banner { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 4px 12px;
+  border-radius: 14px; font-size: 12px; display: none; box-shadow: var(--shadow); }
+#tip { position: fixed; pointer-events: none; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: 8px; padding: 7px 9px; max-width: 320px; font-size: 12px; display: none; z-index: 40; }
+#tip .m { color: var(--muted); }
+#empty { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; color: var(--muted); text-align: center; padding: 20px; }
+
+/* details */
+.placeholder { color: var(--muted); padding-top: 30px; text-align: center; }
+.d-title { font-size: 16px; font-weight: 650; margin: 0 0 2px; }
+.d-sub { color: var(--muted); margin-bottom: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.chip { background: var(--chip); border-radius: 10px; padding: 1px 8px; font-size: 11.5px; }
+.chip.warn { background: color-mix(in srgb, var(--warn) 22%, transparent); }
+.badge { display: inline-block; border-radius: 4px; padding: 0 6px; font-size: 11px; font-weight: 600; color: #fff; }
+.quote { border-left: 3px solid var(--line); padding: 4px 0 4px 9px; margin: 6px 0; font-style: italic; }
+.quote .src { font-style: normal; color: var(--muted); font-size: 11.5px; margin-top: 3px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.v-ok { color: var(--ok); } .v-bad { color: var(--warn); }
+.links { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.links a, .links button { font-size: 12px; text-decoration: none; background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; color: var(--text); }
+table.stats { width: 100%; border-collapse: collapse; font-size: 12px; margin: 6px 0; }
+table.stats th, table.stats td { text-align: left; padding: 3px 4px; border-bottom: 1px solid var(--line); }
+table.stats th { color: var(--muted); font-weight: 500; }
+.conn { display: flex; align-items: center; gap: 7px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+.conn:hover { background: var(--panel-2); }
+.conn .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conn .c { color: var(--muted); font-variant-numeric: tabular-nums; }
+.sides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.side { background: var(--panel-2); border-radius: 8px; padding: 8px; min-width: 0; }
+.side .claim { font-weight: 550; margin-bottom: 4px; cursor: pointer; }
+.review { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+.review .btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.review textarea { width: 100%; min-height: 54px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); padding: 6px; margin-top: 6px; }
+.notes { font-size: 12px; margin-top: 6px; }
+.notes div { border-left: 2px solid var(--line); padding-left: 6px; margin: 4px 0; }
+.hint { color: var(--muted); font-size: 12px; }
+.pool { border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; margin: 6px 0; }
+
+footer { background: var(--panel); border-top: 1px solid var(--line); padding: 5px 14px; color: var(--muted); font-size: 12px; display: flex; gap: 8px; }
+#savestate.saving { color: var(--warn); } #savestate.err { color: var(--conflicts); }
+
+@media (max-width: 1100px) { main { grid-template-columns: 210px 1fr 300px; } }
+@media (max-width: 800px) {
+  body { overflow: auto; }
+  main { grid-template-columns: 1fr; grid-template-rows: auto 60vh auto; }
+  #filters, #details { border: 0; border-bottom: 1px solid var(--line); max-height: none; }
+  #search { width: 100%; }
+  .sides { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <div class="brand">litgraph · <span id="topic"></span> <span class="counts" id="counts"></span></div>
+    <div class="grow"></div>
+    <input id="search" type="search" placeholder="Search entities, authors, cohorts, claims…" autocomplete="off">
+  </div>
+  <div class="row">
+    <span class="lbl">Color by</span>
+    <div class="seg" id="colorby"><button data-v="paper">Paper</button><button data-v="entity">Entity</button><button data-v="direction">Direction</button></div>
+    <span class="lbl">Layout</span>
+    <div class="seg" id="layout"><button data-v="clustered">Clustered</button><button data-v="force">Force</button><button data-v="entity">By entity</button></div>
+    <label class="opt" title="Draw a box around each paper's findings"><input type="checkbox" id="boxes"> Group by paper</label>
+    <div class="grow"></div>
+    <button id="fit" title="Fit to view">Fit</button>
+    <div class="menu" id="exportmenu"><button id="exportbtn" title="Export">⤓ Export</button>
+      <div class="pop">
+        <button data-x="png">PNG of current view</button>
+        <button data-x="svg">SVG of current view</button>
+        <button data-x="json">JSON of filtered subgraph</button>
+        <button data-x="resetpos">Reset saved layout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <aside id="filters">
+    <h3>Views</h3>
+    <div id="views">
+      <label class="opt"><input type="radio" name="view" value="all"> All</label>
+      <label class="opt"><input type="radio" name="view" value="replication"> Replication</label>
+      <label class="opt"><input type="radio" name="view" value="independence"> Independence</label>
+      <label class="opt"><input type="radio" name="view" value="poolable"> Poolable</label>
+    </div>
+    <h3>Polarity</h3>
+    <div id="polarity"></div>
+    <h3>Filter</h3>
+    <div id="msfilters"></div>
+    <h3>Confidence ≥ <span id="confv"></span></h3>
+    <input type="range" id="conf" min="0" max="1" step="0.05">
+    <h3>Review status</h3>
+    <select id="status" class="full">
+      <option value="any">Any</option><option value="unreviewed">Unreviewed</option>
+      <option value="accepted">Accepted</option><option value="stale">Stale (findings changed)</option>
+      <option value="rejected">Rejected</option>
+    </select>
+    <label class="opt" style="margin-top:6px"><input type="checkbox" id="showrejected"> Show rejected edges</label>
+    <label class="opt"><input type="checkbox" id="isolated"> Hide findings with no connections</label>
+    <label class="opt"><input type="checkbox" id="flaggedonly"> Only flagged / unverified findings</label>
+    <div style="margin-top:10px"><button id="clearfilters">Clear filters</button></div>
+  </aside>
+
+  <section id="stage">
+    <div id="cy"></div>
+    <div id="banner"></div>
+    <div id="empty"></div>
+    <div id="legend"></div>
+  </section>
+
+  <aside id="details"><div class="placeholder">Click a finding or a connection to see its evidence.<br><br>
+    <span class="hint">Double-click a finding to focus on its neighbours · Esc to exit</span></div></aside>
+</main>
+
+<footer><span id="statusline"></span><span class="grow"></span><span id="savestate"></span></footer>
+<div id="tip"></div>
+
+<script>/*__LITGRAPH_VENDOR__*/</script>
+<script id="litgraph-data" type="application/json">__LITGRAPH_DATA__</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("litgraph-data").textContent);
+const LIVE = !!DATA.meta.live;
+if (window.cytoscapeSvg) { try { cytoscape.use(cytoscapeSvg); } catch (e) {} }
+
+// ------------------------------------------------------------------ constants
+const TYPES = {
+  replicates: "supports", consistent_with: "supports", contradicts: "conflicts", discordant_levels: "conflicts",
+  shares_cohort: "caution", same_group: "caution", method_confound: "caution", poolable: "neutral", related_entity: "neutral",
+};
+const DIRECTED = new Set(["method_confound"]);
+const POLARITIES = [["supports", "Supports"], ["conflicts", "Conflicts"], ["caution", "Caution"], ["neutral", "Neutral"]];
+const SHAPES = {
+  group_difference: "ellipse", null_result: "ellipse", mechanistic: "ellipse", diagnostic_accuracy: "diamond",
+  correlation: "round-rectangle", genetic_association: "triangle", causal_inference: "triangle", longitudinal_change: "hexagon",
+};
+const ARROWS = { up: "↑", down: "↓", none: "–", mixed: "↕", positive: "↗", negative: "↘" };
+const VIEWS = {
+  all: null,
+  replication: { polarity: ["supports", "conflicts"], layout: "entity" },
+  independence: { polarity: ["caution"] },
+  poolable: { polarity: ["neutral"], types: ["poolable"] },
+};
+
+// ------------------------------------------------------------------ indexes
+const papers = Object.fromEntries(DATA.papers.map(p => [p.paper_id, p]));
+const findings = Object.fromEntries(DATA.findings.map(f => [f.finding_id, f]));
+const entities = Object.fromEntries(DATA.entities.map(e => [e.entity_id, e]));
+const groupsById = Object.fromEntries(DATA.groups.map(g => [g.group_id, g]));
+const cohorts = Object.fromEntries(DATA.cohorts.map(c => [c.cohort_id, c]));
+const edges = Object.fromEntries(DATA.edges.map(e => [e.edge_id, e]));
+const entKey = f => f.entity_id || ("raw:" + f.entity.toLowerCase());
+const entName = f => (entities[f.entity_id] || {}).canonical || f.entity;
+const grpName = (f, side) => (groupsById[(f.comparison || {})[side + "_id"]] || {}).canonical || (f.comparison || {})[side];
+const compName = f => (f.comparison || {}).control ? `${grpName(f, "case")} vs ${grpName(f, "control")}` : (grpName(f, "case") || "");
+const effType = e => (e.review && e.review.type) || e.type;
+const effPolarity = e => TYPES[effType(e)] || e.polarity;
+const status = e => (e.review && e.review.status) || "unreviewed";
+
+// ------------------------------------------------------------------ prefs
+const PREF_KEY = "litgraph:" + DATA.meta.topic;
+let prefs = { colorBy: "paper", layout: "clustered", view: "all", polarity: ["supports", "conflicts", "caution"],
+  conf: 0.5, status: "any", showRejected: false, isolated: false, flaggedOnly: false, boxes: false, ms: {} };
+try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY) || "{}")); } catch (e) {}
+const savePrefs = () => { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} };
+
+// ------------------------------------------------------------------ colors
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const isDark = () => parseInt(css("--bg").slice(1, 3), 16) < 128;
+function palette(keys) {
+  // Evenly spaced hues, golden-angle ordered so neighbours in the list differ.
+  const out = {};
+  const dark = isDark();
+  keys.forEach((k, i) => {
+    const h = (i * 137.508) % 360;
+    const l = dark ? 64 : 48 + (i % 3) * 5;
+    const s = dark ? 55 : 58;
+    out[k] = `hsl(${h.toFixed(0)} ${s}% ${l}%)`;
+  });
+  return out;
+}
+let paperColors, entityColors;
+function computeColors() {
+  paperColors = palette(DATA.papers.map(p => p.paper_id));
+  const ek = [...new Set(DATA.findings.map(entKey))].sort();
+  entityColors = palette(ek);
+}
+function nodeColor(f) {
+  if (prefs.colorBy === "entity") return entityColors[entKey(f)];
+  if (prefs.colorBy === "direction") {
+    if (f.direction === "up" || f.direction === "positive") return css("--up");
+    if (f.direction === "down" || f.direction === "negative") return css("--down");
+    return css("--none");
+  }
+  return paperColors[f.paper_id];
+}
+
+// ------------------------------------------------------------------ elements
+function nodeSize(f) {
+  const n = f.n;
+  if (!n || n <= 0) return 16;
+  return Math.max(16, Math.min(54, 10 + 9 * Math.log10(n + 1)));
+}
+function nodeEl(f) {
+  const flagged = (f.flags || []).some(x => !x.startsWith("quote_unchecked"));
+  const nullish = f.finding_type === "null_result" || f.significant === false || f.direction === "none";
+  return { group: "nodes", data: {
+    id: f.finding_id, kind: "finding", label: `${entName(f)} ${ARROWS[f.direction] || ""}${flagged ? " ⚠" : ""}`,
+    shape: SHAPES[f.finding_type] || "ellipse", size: nodeSize(f), color: nodeColor(f),
+    hollow: nullish ? 1 : 0, unverified: f.verified_quote === false ? 1 : 0,
+  }};
+}
+function edgeEl(e) {
+  return { group: "edges", data: {
+    id: e.edge_id, source: e.source, target: e.target, kind: "edge",
+    polarity: effPolarity(e), conf: e.confidence ?? 0.5, directed: DIRECTED.has(effType(e)) ? 1 : 0,
+    status: status(e),
+  }};
+}
+
+function style() {
+  const pc = { supports: css("--supports"), conflicts: css("--conflicts"), caution: css("--caution"), neutral: css("--neutral") };
+  return [
+    { selector: "node[kind='finding']", style: {
+      "shape": "data(shape)", "width": "data(size)", "height": "data(size)", "background-color": "data(color)",
+      "border-width": 1.5, "border-color": css("--canvas"), "label": "data(label)", "font-size": 9, "color": css("--node-label"),
+      "text-valign": "bottom", "text-margin-y": 3, "min-zoomed-font-size": 7, "text-max-width": 110, "text-wrap": "ellipsis",
+      "transition-property": "opacity", "transition-duration": "120ms" } },
+    { selector: "node[hollow=1]", style: { "background-opacity": 0.12, "border-width": 3, "border-color": "data(color)" } },
+    { selector: "node[unverified=1]", style: { "border-style": "dotted", "border-width": 2.5, "border-color": css("--warn") } },
+    { selector: "node[kind='paper']", style: {
+      "shape": "round-rectangle", "background-color": css("--panel-2"), "background-opacity": 0.6, "border-width": 1,
+      "border-color": css("--line"), "label": "data(label)", "font-size": 11, "color": css("--muted"), "text-valign": "top",
+      "text-halign": "center", "text-margin-y": -4, "padding": 14 } },
+    { selector: "node[kind='clabel']", style: {
+      "shape": "rectangle", "width": 1, "height": 1, "background-opacity": 0, "border-width": 0, "label": "data(label)",
+      "font-size": 12, "font-weight": 600, "color": css("--muted"), "events": "no", "text-valign": "center", "min-zoomed-font-size": 6 } },
+    { selector: "edge", style: {
+      "curve-style": "bezier", "line-color": e => pc[e.data("polarity")], "target-arrow-color": e => pc[e.data("polarity")],
+      "width": "mapData(conf, 0, 1, 1, 5)", "opacity": 0.85, "line-style": "solid" } },
+    { selector: "edge[status='unreviewed'], edge[status='stale']", style: { "line-style": "dashed", "line-dash-pattern": [6, 4] } },
+    { selector: "edge[status='rejected']", style: { "opacity": 0.35, "line-style": "dotted" } },
+    { selector: "edge[directed=1]", style: { "target-arrow-shape": "triangle", "arrow-scale": 1.1 } },
+    { selector: ".hidden", style: { "display": "none" } },
+    { selector: ".dim", style: { "opacity": 0.12 } },
+    { selector: "node:selected", style: { "border-width": 4, "border-color": css("--accent"), "border-style": "solid" } },
+    { selector: "edge:selected", style: { "width": 6, "opacity": 1, "underlay-color": css("--accent"), "underlay-opacity": 0.25, "underlay-padding": 4 } },
+    { selector: ".hl", style: { "border-width": 4, "border-color": css("--accent") } },
+  ];
+}
+
+computeColors();
+const cy = cytoscape({
+  container: document.getElementById("cy"),
+  elements: [...DATA.findings.map(nodeEl), ...DATA.edges.map(edgeEl)],
+  style: style(), wheelSensitivity: 0.25, minZoom: 0.05, maxZoom: 4, boxSelectionEnabled: false,
+});
+
+// ------------------------------------------------------------------ layouts
+function clusterLabels(labels) {
+  cy.remove("node[kind='clabel']");
+  cy.add(labels.map((l, i) => ({ group: "nodes", data: { id: "clabel-" + i, kind: "clabel", label: l.text }, position: l.pos,
+    selectable: false, grabbable: false })));
+}
+function phyllotaxis(n, cx, cy0, spacing) {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const r = spacing * Math.sqrt(i + (n > 1 ? 0.5 : 0));
+    const a = i * 2.39996;
+    pts.push({ x: cx + r * Math.cos(a), y: cy0 + r * Math.sin(a) });
+  }
+  return pts;
+}
+function groupedPositions(keyFn, nameFn, sortFn) {
+  const groups = {};
+  cy.nodes("[kind='finding']").forEach(n => { const k = keyFn(findings[n.id()]); (groups[k] = groups[k] || []).push(n); });
+  const keys = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length || a.localeCompare(b));
+  const radius = k => Math.max(30, 26 * Math.sqrt(groups[k].length));
+  const totalArea = keys.reduce((s, k) => s + (2 * radius(k) + 60) ** 2, 0);
+  const W = Math.max(600, Math.sqrt(totalArea) * 1.25);
+  let x = 0, y = 0, rowH = 0;
+  const pos = {}, labels = [];
+  keys.forEach(k => {
+    const r = radius(k), d = 2 * r + 60;
+    if (x + d > W && x > 0) { x = 0; y += rowH; rowH = 0; }
+    const cx = x + d / 2, cyy = y + d / 2 + 14;
+    const ns = groups[k].slice().sort(sortFn);
+    phyllotaxis(ns.length, cx, cyy, 24).forEach((p, i) => { pos[ns[i].id()] = p; });
+    labels.push({ text: nameFn(k, ns), pos: { x: cx, y: cyy - r - 16 } });
+    x += d; rowH = Math.max(rowH, d + 20);
+  });
+  return { pos, labels };
+}
+const byYear = (a, b) => ((papers[findings[a.id()].paper_id] || {}).year || 0) - ((papers[findings[b.id()].paper_id] || {}).year || 0) || a.id().localeCompare(b.id());
+
+function runLayout(name, opts = {}) {
+  cy.remove("node[kind='clabel']");
+  const saved = opts.useSaved ? DATA.positions : null;
+  let result;
+  if (prefs.boxes) {
+    result = groupedPositions(f => f.paper_id, k => "", byYear);
+    result.labels = [];
+  } else if (name === "force") {
+    const l = cy.elements(":visible").layout({ name: "cose", animate: false, nodeRepulsion: () => 9000, idealEdgeLength: () => 70,
+      gravity: 0.25, numIter: 1500, randomize: true, padding: 30 });
+    l.run();
+    if (!opts.silent) savePositions();
+    return;
+  } else if (name === "entity") {
+    const groups = {};
+    cy.nodes("[kind='finding']").forEach(n => { const k = entKey(findings[n.id()]); (groups[k] = groups[k] || []).push(n); });
+    const keys = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length || a.localeCompare(b));
+    const COLS = Math.max(6, Math.ceil(Math.sqrt(keys.length * 2)));
+    const pos = {}, labels = [];
+    let bandY = 0, bandH = 0;
+    keys.forEach((k, i) => {
+      const col = i % COLS;
+      if (col === 0 && i > 0) { bandY += bandH + 70; bandH = 0; }
+      const x = col * 120;
+      const ns = groups[k].slice().sort(byYear);
+      ns.forEach((n, j) => { pos[n.id()] = { x, y: bandY + 30 + j * 46 }; });
+      labels.push({ text: entName(findings[ns[0].id()]), pos: { x, y: bandY } });
+      bandH = Math.max(bandH, ns.length * 46);
+    });
+    result = { pos, labels };
+  } else {
+    result = groupedPositions(entKey, (k, ns) => entName(findings[ns[0].id()]), byYear);
+  }
+  cy.batch(() => {
+    cy.nodes("[kind='finding']").forEach(n => {
+      const p = (saved && saved[n.id()]) || result.pos[n.id()];
+      if (p) n.position({ x: p.x, y: p.y });
+    });
+  });
+  if (!saved || !Object.keys(saved).length) clusterLabels(result.labels);
+  if (!opts.silent && !opts.useSaved) savePositions();
+}
+
+function setBoxes(on) {
+  prefs.boxes = on; savePrefs();
+  cy.batch(() => {
+    if (on) {
+      const ids = new Set(cy.nodes("[kind='finding']").map(n => findings[n.id()].paper_id));
+      cy.add([...ids].map(pid => ({ group: "nodes", data: { id: "paper:" + pid, kind: "paper",
+        label: `${(papers[pid] || {}).cite || pid}` } })));
+      cy.nodes("[kind='finding']").forEach(n => n.move({ parent: "paper:" + findings[n.id()].paper_id }));
+    } else {
+      cy.nodes("[kind='finding']").forEach(n => { if (n.parent().length) n.move({ parent: null }); });
+      cy.remove("node[kind='paper']");
+    }
+  });
+  runLayout(prefs.layout, { silent: true });
+  applyFilters(); cy.fit(cy.elements(":visible"), 40);
+}
+
+// ------------------------------------------------------------------ filters UI
+const MS = [
+  { key: "entity", label: "Entity", values: () => uniq(DATA.findings.map(f => [entKey(f), entName(f)])), of: f => [entKey(f)] },
+  { key: "paper", label: "Paper", values: () => DATA.papers.map(p => [p.paper_id, p.cite]).sort((a, b) => a[1].localeCompare(b[1])), of: f => [f.paper_id] },
+  { key: "cohort", label: "Cohort", values: () => DATA.cohorts.map(c => [c.cohort_id, c.name]), of: f => (papers[f.paper_id] || {}).cohort_ids || [] },
+  { key: "biofluid", label: "Biofluid", values: () => uniq(DATA.findings.map(f => { const b = (f.methods || {}).biofluid || "unspecified"; return [b.toLowerCase(), b]; })),
+    of: f => [(((f.methods || {}).biofluid) || "unspecified").toLowerCase()] },
+  { key: "ftype", label: "Finding type", values: () => uniq(DATA.findings.map(f => [f.finding_type, f.finding_type.replace(/_/g, " ")])), of: f => [f.finding_type] },
+  { key: "etype", label: "Connection type", values: () => Object.keys(TYPES).map(t => [t, t.replace(/_/g, " ")]), of: null },
+];
+function uniq(pairs) { const m = new Map(); pairs.forEach(([k, v]) => m.has(k) || m.set(k, v)); return [...m].sort((a, b) => String(a[1]).localeCompare(String(b[1]))); }
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function buildFilterUI() {
+  const pol = document.getElementById("polarity");
+  pol.innerHTML = POLARITIES.map(([k, l]) => `<label class="opt"><input type="checkbox" value="${k}"><span class="dot" style="background:var(--${k})"></span>${l}
+    <span class="lbl" data-count="${k}"></span></label>`).join("");
+  pol.querySelectorAll("input").forEach(i => i.addEventListener("change", () => {
+    prefs.polarity = [...pol.querySelectorAll("input:checked")].map(x => x.value); setView("all", false); applyFilters();
+  }));
+  const host = document.getElementById("msfilters");
+  host.innerHTML = "";
+  MS.forEach(m => {
+    const vals = m.values();
+    if (vals.length < 2 && m.key !== "etype") return;
+    const d = document.createElement("details");
+    d.className = "ms"; d.dataset.key = m.key;
+    d.innerHTML = `<summary><span>${m.label}</span><span class="v"></span></summary><div class="box">
+      ${vals.length > 8 ? '<input type="text" placeholder="Filter…">' : ""}
+      <div class="acts"><button data-a="all">All</button><button data-a="none">None</button></div>
+      ${vals.map(([k, v]) => `<label class="opt" data-t="${esc(String(v).toLowerCase())}"><input type="checkbox" value="${esc(k)}"> ${esc(v)}</label>`).join("")}</div>`;
+    host.appendChild(d);
+    const sel = () => prefs.ms[m.key];
+    const sync = () => {
+      const s = sel();
+      d.querySelectorAll(".box input[type=checkbox]").forEach(i => { i.checked = !s || s.includes(i.value); });
+      d.querySelector(".v").textContent = !s ? "All" : s.length === 1 ? (vals.find(v => v[0] === s[0]) || [0, "1"])[1] : `${s.length} selected`;
+    };
+    d.querySelectorAll(".box input[type=checkbox]").forEach(i => i.addEventListener("change", () => {
+      const checked = [...d.querySelectorAll(".box input[type=checkbox]:checked")].map(x => x.value);
+      prefs.ms[m.key] = checked.length === vals.length ? null : checked; sync(); applyFilters();
+    }));
+    d.querySelectorAll(".acts button").forEach(b => b.addEventListener("click", () => {
+      prefs.ms[m.key] = b.dataset.a === "all" ? null : []; sync(); applyFilters();
+    }));
+    const ft = d.querySelector("input[type=text]");
+    if (ft) ft.addEventListener("input", () => {
+      const q = ft.value.toLowerCase();
+      d.querySelectorAll(".box label.opt").forEach(l => { l.style.display = l.dataset.t.includes(q) ? "" : "none"; });
+    });
+    sync();
+  });
+}
+function syncControls() {
+  document.querySelectorAll("#colorby button").forEach(b => b.classList.toggle("on", b.dataset.v === prefs.colorBy));
+  document.querySelectorAll("#layout button").forEach(b => b.classList.toggle("on", b.dataset.v === prefs.layout));
+  document.querySelectorAll("#views input").forEach(i => { i.checked = i.value === prefs.view; });
+  document.querySelectorAll("#polarity input").forEach(i => { i.checked = prefs.polarity.includes(i.value); });
+  document.getElementById("conf").value = prefs.conf;
+  document.getElementById("confv").textContent = Number(prefs.conf).toFixed(2);
+  document.getElementById("status").value = prefs.status;
+  document.getElementById("showrejected").checked = prefs.showRejected;
+  document.getElementById("isolated").checked = prefs.isolated;
+  document.getElementById("flaggedonly").checked = prefs.flaggedOnly;
+  document.getElementById("boxes").checked = prefs.boxes;
+}
+
+// ------------------------------------------------------------------ filtering
+let focusId = null, searchHits = null;
+function findingPasses(f) {
+  for (const m of MS) {
+    const s = prefs.ms[m.key];
+    if (!s || !m.of) continue;
+    if (!m.of(f).some(v => s.includes(v))) return false;
+  }
+  if (prefs.flaggedOnly && !(f.verified_quote === false || (f.flags || []).some(x => x !== "quote_unchecked"))) return false;
+  return true;
+}
+function edgePasses(e) {
+  const st = status(e);
+  if (st === "rejected" && !prefs.showRejected && prefs.status !== "rejected") return false;
+  if (prefs.status !== "any" && st !== prefs.status) return false;
+  if (!prefs.polarity.includes(effPolarity(e))) return false;
+  const v = VIEWS[prefs.view];
+  if (v && v.types && !v.types.includes(effType(e))) return false;
+  const et = prefs.ms.etype;
+  if (et && !et.includes(effType(e))) return false;
+  if ((e.confidence ?? 0) < prefs.conf) return false;
+  return true;
+}
+function applyFilters() {
+  savePrefs();
+  const visN = new Set(DATA.findings.filter(findingPasses).map(f => f.finding_id));
+  const visE = DATA.edges.filter(e => visN.has(e.source) && visN.has(e.target) && edgePasses(e));
+  const isolatedHide = prefs.isolated || (prefs.view !== "all");
+  let keep = visN;
+  if (isolatedHide) {
+    keep = new Set();
+    visE.forEach(e => { keep.add(e.source); keep.add(e.target); });
+  }
+  if (focusId) {
+    const nb = new Set([focusId]);
+    visE.forEach(e => { if (e.source === focusId) nb.add(e.target); if (e.target === focusId) nb.add(e.source); });
+    keep = new Set([...keep].filter(x => nb.has(x))); keep.add(focusId);
+  }
+  const eIds = new Set(visE.filter(e => keep.has(e.source) && keep.has(e.target)).map(e => e.edge_id));
+  cy.batch(() => {
+    cy.nodes("[kind='finding']").forEach(n => n.toggleClass("hidden", !keep.has(n.id())));
+    cy.edges().forEach(ed => ed.toggleClass("hidden", !eIds.has(ed.id())));
+    cy.nodes("[kind='paper']").forEach(p => p.toggleClass("hidden", p.children().filter(c => !c.hasClass("hidden")).length === 0));
+    cy.nodes("[kind='clabel']").toggleClass("hidden", !!focusId);
+    cy.elements().removeClass("dim");
+    if (searchHits) {
+      cy.nodes("[kind='finding']").forEach(n => n.toggleClass("dim", !searchHits.has(n.id())));
+      cy.edges().forEach(ed => ed.toggleClass("dim", !(searchHits.has(ed.source().id()) || searchHits.has(ed.target().id()))));
+    }
+  });
+  const counts = { supports: 0, conflicts: 0, caution: 0, neutral: 0 };
+  DATA.edges.forEach(e => { if (status(e) !== "rejected") counts[effPolarity(e)]++; });
+  document.querySelectorAll("[data-count]").forEach(s => { s.textContent = counts[s.dataset.count] || ""; });
+  document.getElementById("empty").style.display = keep.size ? "none" : "flex";
+  document.getElementById("empty").textContent = "No findings match these filters.";
+  const unrev = [...eIds].filter(id => ["unreviewed", "stale"].includes(status(edges[id]))).length;
+  statusLine({ nodes: keep.size, edges: eIds.size, unrev });
+  if (prefs.view === "poolable" && !current) showPoolable();
+}
+function statusLine({ nodes, edges: ne, unrev }) {
+  document.getElementById("statusline").textContent =
+    `${nodes} findings · ${ne} connections in view · ${unrev} unreviewed · last build ${DATA.meta.built_at}` +
+    (LIVE ? "" : " · read-only (run `litgraph view` to review)");
+}
+function setView(v, apply = true) {
+  prefs.view = v;
+  const def = VIEWS[v];
+  if (def) {
+    prefs.polarity = def.polarity.slice();
+    if (def.layout && prefs.layout !== def.layout && !prefs.boxes) { prefs.layout = def.layout; runLayout(prefs.layout, { silent: true }); }
+  }
+  syncControls();
+  if (apply) { applyFilters(); cy.fit(cy.elements(":visible"), 40); }
+}
+
+// ------------------------------------------------------------------ search
+function searchIndex(f) {
+  const p = papers[f.paper_id] || {};
+  const e = entities[f.entity_id] || {};
+  const coh = (p.cohort_ids || []).map(c => cohorts[c]).filter(Boolean);
+  return [f.claim, f.entity, e.canonical, ...(e.aliases || []), ...(p.authors || []), p.title, p.cite,
+    ...coh.flatMap(c => [c.name, ...(c.aliases || []), c.registry_id]), compName(f), f.finding_id].filter(Boolean).join(" \u0001 ").toLowerCase();
+}
+const SEARCH = Object.fromEntries(DATA.findings.map(f => [f.finding_id, searchIndex(f)]));
+let searchTimer;
+document.getElementById("search").addEventListener("input", ev => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    const q = ev.target.value.trim().toLowerCase();
+    if (!q) { searchHits = null; applyFilters(); return; }
+    const terms = q.split(/\s+/);
+    searchHits = new Set(Object.keys(SEARCH).filter(id => terms.every(t => SEARCH[id].includes(t))));
+    applyFilters();
+    const hit = cy.nodes(":visible").filter(n => searchHits.has(n.id()));
+    if (hit.length) cy.animate({ fit: { eles: hit, padding: 80 }, duration: 250 });
+  }, 160);
+});
+
+// ------------------------------------------------------------------ details
+let current = null;
+const detailsEl = document.getElementById("details");
+function pdfHref(pid, page) {
+  const p = papers[pid];
+  if (!p || !p.has_pdf) return null;
+  const frag = page ? `#page=${page}` : "";
+  return LIVE ? `/pdf/${encodeURIComponent(pid)}${frag}` : `../${p.pdf_path || ""}${frag}`;
+}
+function paperLinks(pid, page) {
+  const p = papers[pid] || {};
+  const out = [];
+  const href = pdfHref(pid, page);
+  if (href) out.push(`<a href="${esc(href)}" target="_blank" rel="noopener">Open PDF${page ? " p." + page : ""}</a>`);
+  if (p.doi) out.push(`<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">DOI</a>`);
+  if (p.pmid) out.push(`<a href="https://pubmed.ncbi.nlm.nih.gov/${esc(p.pmid)}/" target="_blank" rel="noopener">PubMed</a>`);
+  else if (p.doi) out.push(`<a href="https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(p.doi)}" target="_blank" rel="noopener">PubMed</a>`);
+  return out.join("");
+}
+function verifiedMark(ev) {
+  const v = ev.verified;
+  if (v === "verified") return `<span class="v-ok" title="Quote found on this page">✓ verified</span>`;
+  if (v === "wrong_page") return `<span class="v-bad" title="Found on a different page">⚠ found on p.${ev.found_page}</span>`;
+  if (v === "not_found") return `<span class="v-bad" title="Not found in the PDF text">⚠ not found in PDF</span>`;
+  return `<span class="lbl">unchecked</span>`;
+}
+function quoteBlock(ev, pid) {
+  const page = ev.found_page || ev.page;
+  const href = pdfHref(pid, page);
+  return `<div class="quote">“${esc(ev.quote)}”<div class="src">p. ${esc(ev.page ?? "?")}${ev.location ? " · " + esc(ev.location) : ""}
+    · ${verifiedMark(ev)}${href ? ` · <a href="${esc(href)}" target="_blank" rel="noopener">open</a>` : ""}</div></div>`;
+}
+const fmtNum = v => v == null ? "—" : (typeof v === "number" ? (Math.abs(v) >= 1000 || Number.isInteger(v) ? v : +v.toPrecision(4)) : esc(v));
+const fmtSpread = s => Array.isArray(s) ? `${fmtNum(s[0])}–${fmtNum(s[1])}` : fmtNum(s);
+
+function showFinding(id) {
+  const f = findings[id];
+  if (!f) return;
+  current = { kind: "node", id };
+  const p = papers[f.paper_id] || {};
+  const m = f.methods || {};
+  const chips = [m.biofluid, m.ev_type && m.ev_type + " EVs", m.isolation, m.assay, m.normalization].filter(Boolean)
+    .map(x => `<span class="chip">${esc(x)}</span>`).join("");
+  const flags = (f.flags || []).map(x => `<span class="chip warn">⚠ ${esc(x.replace(/_/g, " "))}</span>`).join("");
+  const st = f.stats || {};
+  const groups = (st.groups || []);
+  const gtable = groups.length ? `<table class="stats"><tr><th>Group</th><th>n</th><th>Value</th><th>Spread</th><th>Stat</th></tr>
+    ${groups.map(g => `<tr><td>${esc(g.label)}</td><td>${fmtNum(g.n)}</td><td>${fmtNum(g.value)}${g.unit ? " " + esc(g.unit) : ""}</td>
+    <td>${fmtSpread(g.spread)}</td><td>${esc((g.stat_type || "—").replace(/_/g, " "))}</td></tr>`).join("")}</table>` : "";
+  const eff = st.effect && (st.effect.metric || st.effect.value != null)
+    ? `<div>Effect: <b>${esc(st.effect.metric || "")}</b> ${fmtNum(st.effect.value)}${st.effect.ci ? ` (CI ${fmtSpread(st.effect.ci)})` : ""}</div>` : "";
+  const pv = st.p_value != null ? `<div>p = ${esc(st.p_value)}${st.test ? " · " + esc(st.test) : ""}</div>` : "";
+  const adj = f.adjusted != null ? `<div>${f.adjusted ? "Adjusted" : "Unadjusted"}${(f.covariates || []).length ? ": " + esc(f.covariates.join(", ")) : ""}</div>` : "";
+  const conns = DATA.edges.filter(e => (e.source === id || e.target === id) && (status(e) !== "rejected" || prefs.showRejected))
+    .sort((a, b) => (b.confidence || 0) - (a.confidence || 0));
+  const connHtml = conns.map(e => {
+    const other = findings[e.source === id ? e.target : e.source];
+    const op = papers[other.paper_id] || {};
+    return `<div class="conn" data-edge="${e.edge_id}"><span class="dot" style="background:var(--${effPolarity(e)})"></span>
+      <span class="t"><b>${esc(effType(e).replace(/_/g, " "))}</b> · ${esc(op.cite || other.paper_id)} · ${esc(entName(other))}</span>
+      <span class="c">${e.confidence != null ? e.confidence.toFixed(2) : ""}</span></div>`;
+  }).join("");
+  detailsEl.innerHTML = `
+    <div class="d-title">${esc(entName(f))} ${ARROWS[f.direction] || ""}</div>
+    <div class="d-sub">${esc(compName(f))}${(f.comparison || {}).subgroup ? " · " + esc(f.comparison.subgroup) : ""} · ${esc(f.finding_type.replace(/_/g, " "))}
+      ${f.significant === true ? " · significant" : f.significant === false ? " · not significant" : ""}</div>
+    <div><b>${esc(p.cite || f.paper_id)}</b> <span class="lbl">${esc(p.journal || "")}</span></div>
+    <div class="hint" style="margin:2px 0 6px">${esc(p.title || "")}</div>
+    <div>${esc(f.claim)}</div>
+    <div class="chips">${chips}${flags}</div>
+    ${gtable}${eff}${pv}${adj}
+    <h3>Evidence</h3>${(f.evidence || []).map(ev => quoteBlock(ev, f.paper_id)).join("")}
+    <div class="links">${paperLinks(f.paper_id, ((f.evidence || [])[0] || {}).page)}</div>
+    <h3>Connections (${conns.length})</h3>${connHtml || '<div class="hint">No connections.</div>'}
+    <div class="hint" style="margin-top:10px">${esc(f.finding_id)}${f.extraction_confidence != null ? " · extraction confidence " + f.extraction_confidence : ""}</div>`;
+  detailsEl.querySelectorAll(".conn").forEach(c => c.addEventListener("click", () => selectEdge(c.dataset.edge)));
+}
+
+function sideHtml(e, fid) {
+  const f = findings[fid];
+  const p = papers[f.paper_id] || {};
+  const evs = (e.evidence || []).filter(ev => ev.finding_id === fid);
+  return `<div class="side"><div class="claim" data-node="${fid}">${esc(entName(f))} ${ARROWS[f.direction] || ""} · ${esc(p.cite || f.paper_id)}</div>
+    <div class="hint">${esc(compName(f))}</div><div style="margin-top:4px">${esc(f.claim)}</div>
+    ${evs.map(ev => quoteBlock(ev, f.paper_id)).join("") || '<div class="hint">No quote cited for this side.</div>'}
+    <div class="links">${paperLinks(f.paper_id, (evs[0] || {}).found_page || (evs[0] || {}).page)}</div></div>`;
+}
+function showEdge(id) {
+  const e = edges[id];
+  if (!e) return;
+  current = { kind: "edge", id };
+  const pol = effPolarity(e), t = effType(e), st = status(e);
+  const rv = e.review || {};
+  const quals = (e.qualifiers || []).map(q => `<span class="chip">${esc(q)}</span>`).join("");
+  const flags = (e.flags || []).map(x => `<span class="chip warn">⚠ ${esc(x.replace(/_/g, " "))}</span>`).join("");
+  const dis = LIVE ? "" : "disabled";
+  detailsEl.innerHTML = `
+    <div class="d-title"><span class="badge" style="background:var(--${pol})">${esc(pol)}</span> ${esc(t.replace(/_/g, " "))}
+      ${rv.type ? `<span class="lbl">(was ${esc(e.type.replace(/_/g, " "))})</span>` : ""}</div>
+    <div class="d-sub">confidence ${e.confidence != null ? e.confidence.toFixed(2) : "—"} · ${esc(st)}${rv.reviewer ? " by " + esc(rv.reviewer) : ""}
+      · ${esc(e.created_by || "")}${DIRECTED.has(t) ? " · directed: explanation → discrepancy" : ""}</div>
+    <div>${esc(e.rationale)}</div>
+    <div class="chips">${quals}${flags}</div>
+    <div class="sides" style="margin-top:8px">${sideHtml(e, e.source)}${sideHtml(e, e.target)}</div>
+    <div class="review">
+      <div class="btns">
+        <button class="primary" data-d="accept" ${dis}>Accept</button>
+        <button data-d="reject" ${dis}>Reject</button>
+        <select id="retype" ${dis}>${Object.keys(TYPES).map(k => `<option value="${k}" ${k === t ? "selected" : ""}>${k.replace(/_/g, " ")}</option>`).join("")}</select>
+        <button data-d="retype" ${dis}>Change type</button>
+        ${st !== "unreviewed" ? `<button data-d="reset" ${dis}>Undo</button>` : ""}
+      </div>
+      <textarea id="note" placeholder="Add a note…" ${dis}></textarea>
+      <div class="btns" style="margin-top:4px"><button data-d="note" ${dis}>Add note</button>
+        ${LIVE ? "" : '<span class="hint">Read-only file. Run <code>litgraph view</code> to save decisions.</span>'}</div>
+      <div class="notes">${(rv.notes || []).map(n => `<div>${esc(n.text)}<div class="hint">${esc(n.reviewer || "")} · ${esc((n.timestamp || "").slice(0, 16).replace("T", " "))}</div></div>`).join("")}</div>
+      ${st === "stale" ? '<div class="hint v-bad">A finding changed since this was reviewed; please review again.</div>' : ""}
+    </div>
+    <div class="hint" style="margin-top:10px">${esc(e.edge_id)} · ${esc(e.edge_key)}</div>`;
+  detailsEl.querySelectorAll(".claim[data-node]").forEach(c => c.addEventListener("click", () => selectNode(c.dataset.node)));
+  detailsEl.querySelectorAll("button[data-d]").forEach(b => b.addEventListener("click", () => {
+    const d = b.dataset.d;
+    const payload = { edge_key: e.edge_key, edge_id: e.edge_id, decision: d };
+    if (d === "retype") payload.new_type = document.getElementById("retype").value;
+    const note = document.getElementById("note").value.trim();
+    if (note) payload.note = note;
+    if (d === "note" && !note) return;
+    sendReview(e, payload);
+  }));
+}
+function showPoolable() {
+  const pool = DATA.edges.filter(e => effType(e) === "poolable" && status(e) !== "rejected");
+  const parent = {};
+  const find = x => { while (parent[x] !== undefined && parent[x] !== x) x = parent[x]; return x; };
+  pool.forEach(e => { parent[e.source] ??= e.source; parent[e.target] ??= e.target; parent[find(e.source)] = find(e.target); });
+  const sets = {};
+  Object.keys(parent).forEach(x => { const r = find(x); (sets[r] = sets[r] || []).push(x); });
+  const list = Object.values(sets).sort((a, b) => b.length - a.length);
+  detailsEl.innerHTML = `<div class="d-title">Poolable sets</div><div class="d-sub">${list.length} sets of findings that measure the same thing the same way</div>` +
+    list.map((ids, i) => {
+      const f = findings[ids[0]];
+      const types = [...new Set(ids.flatMap(x => ((findings[x].stats || {}).groups || []).map(g => g.stat_type || "unknown")))];
+      const csv = LIVE ? `<a href="/api/poolable.csv?ids=${ids.map(encodeURIComponent).join(",")}">Export CSV</a>`
+        : `<span class="hint">CSV in litgraph/reports/</span>`;
+      return `<div class="pool"><b>${esc(entName(f))}</b> · ${esc(compName(f))}<div class="hint">${ids.length} studies · ${esc(types.join(", "))}</div>
+        <div class="links">${csv}<button data-pool="${i}">Show</button></div></div>`;
+    }).join("");
+  detailsEl.querySelectorAll("button[data-pool]").forEach(b => b.addEventListener("click", () => {
+    const ids = new Set(list[+b.dataset.pool]);
+    cy.animate({ fit: { eles: cy.nodes().filter(n => ids.has(n.id())), padding: 80 }, duration: 250 });
+  }));
+}
+
+function selectNode(id) { cy.elements().unselect(); const n = cy.getElementById(id); n.select(); showFinding(id);
+  if (n.visible()) cy.animate({ center: { eles: n }, duration: 200 }); }
+function selectEdge(id) { cy.elements().unselect(); const e = cy.getElementById(id); e.select(); showEdge(id); }
+
+// ------------------------------------------------------------------ saving
+const saveEl = document.getElementById("savestate");
+function saveState(s, cls = "") { saveEl.textContent = s; saveEl.className = cls; }
+async function post(url, body) {
+  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+  return r.json();
+}
+async function sendReview(e, payload) {
+  if (!LIVE) return;
+  saveState("saving…", "saving");
+  try {
+    const res = await post("/api/review", payload);
+    const s = res.state || {};
+    e.review = { status: s.status || "unreviewed", type: s.type || null, notes: s.notes || [], reviewer: s.reviewer, timestamp: s.timestamp };
+    const el = cy.getElementById(e.edge_id);
+    el.data({ polarity: effPolarity(e), status: status(e), directed: DIRECTED.has(effType(e)) ? 1 : 0 });
+    saveState("saved");
+    applyFilters();
+    showEdge(e.edge_id);
+  } catch (err) { saveState("save failed: " + err.message, "err"); }
+}
+let posTimer;
+function savePositions() {
+  if (!LIVE) return;
+  clearTimeout(posTimer);
+  posTimer = setTimeout(async () => {
+    const positions = {};
+    cy.nodes("[kind='finding']").forEach(n => { positions[n.id()] = n.position(); });
+    DATA.positions = positions;
+    saveState("saving…", "saving");
+    try { await post("/api/positions", { positions }); saveState("saved"); }
+    catch (err) { saveState("layout not saved: " + err.message, "err"); }
+  }, 600);
+}
+
+// ------------------------------------------------------------------ export
+function download(name, blob) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+document.getElementById("exportbtn").addEventListener("click", ev => { ev.stopPropagation(); document.getElementById("exportmenu").classList.toggle("open"); });
+document.addEventListener("click", () => document.getElementById("exportmenu").classList.remove("open"));
+document.querySelectorAll("#exportmenu [data-x]").forEach(b => b.addEventListener("click", () => {
+  const x = b.dataset.x, bg = css("--canvas");
+  if (x === "png") download("litgraph.png", cy.png({ output: "blob", full: false, scale: 2, bg }));
+  if (x === "svg") {
+    if (!cy.svg) return saveState("SVG export unavailable", "err");
+    download("litgraph.svg", new Blob([cy.svg({ full: false, scale: 1, bg })], { type: "image/svg+xml" }));
+  }
+  if (x === "json") {
+    const ns = cy.nodes("[kind='finding']:visible").map(n => findings[n.id()]);
+    const es = cy.edges(":visible").map(e => edges[e.id()]);
+    const pids = new Set(ns.map(f => f.paper_id));
+    download("litgraph-subgraph.json", new Blob([JSON.stringify({ meta: DATA.meta, filters: prefs,
+      papers: DATA.papers.filter(p => pids.has(p.paper_id)), findings: ns, edges: es }, null, 2)], { type: "application/json" }));
+  }
+  if (x === "resetpos") { DATA.positions = {}; if (LIVE) post("/api/positions", { reset: true }).catch(() => {});
+    runLayout(prefs.layout, { silent: true }); cy.fit(cy.elements(":visible"), 40); }
+}));
+
+// ------------------------------------------------------------------ legend
+function legend() {
+  const shape = (d) => `<svg viewBox="0 0 12 12"><path d="${d}" fill="var(--muted)"/></svg>`;
+  const sh = { circle: "M6 1a5 5 0 1 0 0.01 0Z", diamond: "M6 0.5 11.5 6 6 11.5 0.5 6Z", square: "M1.5 1.5h9v9h-9Z",
+    triangle: "M6 1 11 11H1Z", hexagon: "M3 1h6l3 5-3 5H3L0 6Z" };
+  const el = document.getElementById("legend");
+  el.innerHTML = `<div class="hd" style="cursor:pointer" title="Show/hide">Legend</div><div class="body" style="display:contents">
+    <span class="k"><span class="ln" style="border-color:var(--supports)"></span>supports</span>
+    <span class="k">${shape(sh.circle)} group difference</span>
+    <span class="k"><span class="ln" style="border-color:var(--conflicts)"></span>conflicts</span>
+    <span class="k">${shape(sh.diamond)} diagnostic accuracy</span>
+    <span class="k"><span class="ln" style="border-color:var(--caution)"></span>caution</span>
+    <span class="k">${shape(sh.square)} correlation</span>
+    <span class="k"><span class="ln" style="border-color:var(--neutral)"></span>neutral</span>
+    <span class="k">${shape(sh.triangle)} genetic / causal</span>
+    <span class="k"><span class="ln dash" style="border-color:var(--muted)"></span>unreviewed</span>
+    <span class="k">${shape(sh.hexagon)} longitudinal</span>
+    <span class="k">○ hollow = null result</span><span class="k">⚠ flagged · dotted = unverified</span></div>`;
+  el.querySelector(".hd").addEventListener("click", () => {
+    el.classList.toggle("min");
+    el.querySelector(".body").style.display = el.classList.contains("min") ? "none" : "contents";
+  });
+}
+
+// ------------------------------------------------------------------ events
+const tip = document.getElementById("tip");
+cy.on("mouseover", "node[kind='finding']", ev => {
+  const f = findings[ev.target.id()], p = papers[f.paper_id] || {};
+  tip.innerHTML = `<div>${esc(f.claim)}</div><div class="m">${esc(p.cite || f.paper_id)} · ${esc(entName(f))} · ${esc(compName(f))}</div>`;
+  tip.style.display = "block";
+});
+cy.on("mousemove", ev => {
+  if (tip.style.display !== "block") return;
+  const oe = ev.originalEvent;
+  tip.style.left = Math.min(window.innerWidth - 340, oe.clientX + 14) + "px";
+  tip.style.top = (oe.clientY + 14) + "px";
+});
+cy.on("mouseout", "node", () => { tip.style.display = "none"; });
+cy.on("tap", "node[kind='finding']", ev => showFinding(ev.target.id()));
+cy.on("tap", "edge", ev => showEdge(ev.target.id()));
+cy.on("tap", ev => { if (ev.target === cy) { current = null; if (prefs.view === "poolable") showPoolable(); } });
+cy.on("dbltap", "node[kind='finding']", ev => enterFocus(ev.target.id()));
+cy.on("dragfree", "node", () => savePositions());
+
+function enterFocus(id) {
+  focusId = id; applyFilters();
+  const b = document.getElementById("banner");
+  b.textContent = `Focus: ${entName(findings[id])} · ${(papers[findings[id].paper_id] || {}).cite || ""} · Esc to exit`;
+  b.style.display = "block";
+  cy.animate({ fit: { eles: cy.elements(":visible"), padding: 60 }, duration: 250 });
+}
+function exitFocus() {
+  if (!focusId) return;
+  focusId = null; document.getElementById("banner").style.display = "none"; applyFilters();
+  cy.animate({ fit: { eles: cy.elements(":visible"), padding: 40 }, duration: 250 });
+}
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") { exitFocus(); document.getElementById("exportmenu").classList.remove("open"); }
+});
+
+document.querySelectorAll("#colorby button").forEach(b => b.addEventListener("click", () => {
+  prefs.colorBy = b.dataset.v; syncControls(); savePrefs();
+  cy.batch(() => cy.nodes("[kind='finding']").forEach(n => n.data("color", nodeColor(findings[n.id()]))));
+}));
+document.querySelectorAll("#layout button").forEach(b => b.addEventListener("click", () => {
+  prefs.layout = b.dataset.v; syncControls(); savePrefs();
+  runLayout(prefs.layout); cy.fit(cy.elements(":visible"), 40);
+}));
+document.querySelectorAll("#views input").forEach(i => i.addEventListener("change", () => { current = null; setView(i.value); }));
+document.getElementById("conf").addEventListener("input", ev => { prefs.conf = +ev.target.value;
+  document.getElementById("confv").textContent = prefs.conf.toFixed(2); applyFilters(); });
+document.getElementById("status").addEventListener("change", ev => { prefs.status = ev.target.value; applyFilters(); });
+document.getElementById("showrejected").addEventListener("change", ev => { prefs.showRejected = ev.target.checked; applyFilters(); });
+document.getElementById("isolated").addEventListener("change", ev => { prefs.isolated = ev.target.checked; applyFilters(); });
+document.getElementById("flaggedonly").addEventListener("change", ev => { prefs.flaggedOnly = ev.target.checked; applyFilters(); });
+document.getElementById("boxes").addEventListener("change", ev => setBoxes(ev.target.checked));
+document.getElementById("fit").addEventListener("click", () => cy.animate({ fit: { eles: cy.elements(":visible"), padding: 40 }, duration: 250 }));
+document.getElementById("clearfilters").addEventListener("click", () => {
+  prefs.ms = {}; prefs.conf = 0.5; prefs.status = "any"; prefs.flaggedOnly = false; prefs.isolated = false; prefs.showRejected = false;
+  document.getElementById("search").value = ""; searchHits = null;
+  buildFilterUI(); setView("all");
+});
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  computeColors(); cy.style(style());
+  cy.batch(() => cy.nodes("[kind='finding']").forEach(n => n.data("color", nodeColor(findings[n.id()]))));
+});
+
+// ------------------------------------------------------------------ init
+document.getElementById("topic").textContent = DATA.meta.topic;
+document.title = `litgraph · ${DATA.meta.topic}`;
+const c = DATA.meta.counts;
+document.getElementById("counts").textContent = `(${c.papers} papers · ${c.findings} findings · ${c.edges} edges)`;
+saveState(LIVE ? "connected" : "read-only");
+legend();
+buildFilterUI();
+syncControls();
+if (prefs.boxes) setBoxes(true);
+else runLayout(prefs.layout, { useSaved: Object.keys(DATA.positions || {}).length > 0, silent: true });
+applyFilters();
+cy.fit(cy.elements(":visible"), 40);
+if (!DATA.findings.length) { const e = document.getElementById("empty"); e.style.display = "flex";
+  e.textContent = "No findings yet. Run /litgraph:synthesize in Claude Code, then litgraph build."; }
+</script>
+</body>
+</html>

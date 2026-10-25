@@ -1,0 +1,29 @@
+{
+  "project": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo",
+  "papers": [
+    {
+      "paper_id": "10-1234-abc-2023",
+      "pdf_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/papers/10.1234_abc.2023.pdf",
+      "text_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/text/10-1234-abc-2023.txt",
+      "file_hash": "sha256:5368e26157137393a95fa0d07bfd781e03a1bac57aa7b257d929929212496d11",
+      "n_pages": 2,
+      "out_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/extractions/10-1234-abc-2023.json"
+    },
+    {
+      "paper_id": "lattekivi2022",
+      "pdf_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/papers/lattekivi2022.pdf",
+      "text_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/text/lattekivi2022.txt",
+      "file_hash": "sha256:97377d9f4176c37dc084aef675e4344f162ff98751e2c29650456450c5511314",
+      "n_pages": 2,
+      "out_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/extractions/lattekivi2022.json"
+    },
+    {
+      "paper_id": "pasquali2020",
+      "pdf_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/papers/pasquali2020.pdf",
+      "text_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/text/pasquali2020.txt",
+      "file_hash": "sha256:2e735eeb32f768ef7e0db33663ff053734ead8e287cb7508cf9f3ac35eacf9b6",
+      "n_pages": 2,
+      "out_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/extractions/pasquali2020.json"
+    }
+  ]
+}

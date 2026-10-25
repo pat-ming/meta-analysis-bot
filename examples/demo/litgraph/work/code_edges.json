@@ -1,0 +1,94 @@
+[
+  {
+    "source": "chen2023-f2",
+    "target": "lattekivi2022-f1",
+    "type": "shares_cohort",
+    "rationale": "Both papers draw on the same cohort (PsoBank); these findings are not independent.",
+    "qualifiers": [],
+    "evidence": [
+      {
+        "finding_id": "chen2023-f2",
+        "quote": "Participants were drawn from the PsoBank cohort.",
+        "page": 1,
+        "verified": "verified"
+      },
+      {
+        "finding_id": "lattekivi2022-f1",
+        "quote": "Patients were recruited from the PsoBank cohort",
+        "page": 1,
+        "verified": "verified"
+      }
+    ],
+    "confidence": 0.95,
+    "created_by": "code"
+  },
+  {
+    "source": "chen2023-f2",
+    "target": "lattekivi2022-f1",
+    "type": "same_group",
+    "rationale": "Same research group (group-koks; shared authors: Kingo K, Koks S); agreement here is not independent replication.",
+    "qualifiers": [],
+    "evidence": [
+      {
+        "finding_id": "chen2023-f2",
+        "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+        "page": 2,
+        "verified": "verified"
+      },
+      {
+        "finding_id": "lattekivi2022-f1",
+        "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+        "page": 2,
+        "verified": "verified"
+      }
+    ],
+    "confidence": 0.9,
+    "created_by": "code"
+  },
+  {
+    "source": "chen2023-f1",
+    "target": "lattekivi2022-f1",
+    "type": "shares_cohort",
+    "rationale": "Both papers draw on the same cohort (PsoBank); these findings are not independent.",
+    "qualifiers": [],
+    "evidence": [
+      {
+        "finding_id": "chen2023-f1",
+        "quote": "Participants were drawn from the PsoBank cohort.",
+        "page": 1,
+        "verified": "verified"
+      },
+      {
+        "finding_id": "lattekivi2022-f1",
+        "quote": "Patients were recruited from the PsoBank cohort",
+        "page": 1,
+        "verified": "verified"
+      }
+    ],
+    "confidence": 0.95,
+    "created_by": "code"
+  },
+  {
+    "source": "chen2023-f1",
+    "target": "lattekivi2022-f1",
+    "type": "same_group",
+    "rationale": "Same research group (group-koks; shared authors: Kingo K, Koks S); agreement here is not independent replication.",
+    "qualifiers": [],
+    "evidence": [
+      {
+        "finding_id": "chen2023-f1",
+        "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+        "page": 2,
+        "verified": "verified"
+      },
+      {
+        "finding_id": "lattekivi2022-f1",
+        "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+        "page": 2,
+        "verified": "verified"
+      }
+    ],
+    "confidence": 0.9,
+    "created_by": "code"
+  }
+]

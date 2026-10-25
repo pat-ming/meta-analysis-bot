@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "finding.schema.json",
+  "title": "Finding",
+  "description": "One measured relationship, in one comparison, in one paper. A graph node.",
+  "type": "object",
+  "required": ["finding_id", "claim", "finding_type", "entity", "comparison", "direction", "significant", "evidence"],
+  "properties": {
+    "finding_id": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-f[0-9]+$"},
+    "paper_id": {"type": "string"},
+    "claim": {"type": "string", "minLength": 10},
+    "finding_type": {"enum": ["group_difference", "diagnostic_accuracy", "correlation", "longitudinal_change", "genetic_association", "causal_inference", "null_result", "mechanistic"]},
+    "entity": {"type": "string", "minLength": 1, "description": "The measured thing, as named in the paper (resolved later)."},
+    "entity_type": {"type": ["string", "null"], "description": "e.g. miRNA, protein, mRNA, lncRNA, metabolite, EV_subpopulation, cell_type, clinical_measure, genetic_variant"},
+    "comparison": {
+      "type": "object",
+      "required": ["case", "control"],
+      "properties": {
+        "case": {"type": "string"},
+        "control": {"type": ["string", "null"], "description": "null for correlations / single-group designs"},
+        "subgroup": {"type": ["string", "null"], "description": "e.g. 'female only', 'large EVs'"}
+      }
+    },
+    "direction": {"enum": ["up", "down", "none", "mixed", "positive", "negative"], "description": "up/down for group differences; positive/negative for correlations; none for null results"},
+    "significant": {"type": ["boolean", "null"]},
+    "stats": {
+      "type": "object",
+      "properties": {
+        "groups": {"type": "array", "items": {"$ref": "#/$defs/group"}},
+        "effect": {
+          "type": ["object", "null"],
+          "properties": {
+            "metric": {"type": ["string", "null"], "description": "AUC, OR, HR, beta, r, rho, fold_change, log2FC, SMD, ..."},
+            "value": {"type": ["number", "null"]},
+            "ci": {"type": ["array", "null"], "items": {"type": "number"}, "minItems": 2, "maxItems": 2}
+          }
+        },
+        "p_value": {"type": ["number", "string", "null"], "description": "number, or a string such as '<0.001'"},
+        "test": {"type": ["string", "null"]}
+      }
+    },
+    "methods": {
+      "type": "object",
+      "properties": {
+        "biofluid": {"type": ["string", "null"]},
+        "ev_type": {"type": ["string", "null"]},
+        "isolation": {"type": ["string", "null"]},
+        "assay": {"type": ["string", "null"]},
+        "normalization": {"type": ["string", "null"]},
+        "notes": {"type": ["string", "null"]}
+      }
+    },
+    "population": {
+      "type": "object",
+      "properties": {
+        "n_total": {"type": ["integer", "null"], "minimum": 0},
+        "age_mean": {"type": ["number", "null"]},
+        "pct_female": {"type": ["number", "null"]},
+        "notes": {"type": ["string", "null"]}
+      }
+    },
+    "adjusted": {"type": ["boolean", "null"]},
+    "covariates": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+    "verified_quote": {"type": ["boolean", "null"], "description": "Set by code, never by the model."},
+    "extraction_confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "flags": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "group": {
+      "type": "object",
+      "required": ["label"],
+      "properties": {
+        "label": {"type": "string"},
+        "n": {"type": ["integer", "null"], "minimum": 0},
+        "value": {"type": ["number", "null"], "description": "mean or median, per stat_type"},
+        "spread": {"type": ["number", "array", "null"], "items": {"type": "number"}, "description": "SD or SEM as a number; IQR, range or CI as [low, high]"},
+        "stat_type": {"enum": ["mean_sd", "mean_sem", "median_iqr", "median_range", "mean_ci", "count", "other", null]},
+        "unit": {"type": ["string", "null"]}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["quote", "page"],
+      "properties": {
+        "quote": {"type": "string", "minLength": 8, "description": "Verbatim text copied from the paper."},
+        "page": {"type": ["integer", "null"], "minimum": 1, "description": "1-based PDF page index, as in the === PAGE n === markers."},
+        "location": {"type": ["string", "null"], "description": "e.g. 'Results / Table 2'"},
+        "verified": {"type": ["string", "null"], "description": "Set by code."},
+        "found_page": {"type": ["integer", "null"], "description": "Set by code."}
+      }
+    }
+  }
+}

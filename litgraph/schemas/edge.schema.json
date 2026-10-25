@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "edge.schema.json",
+  "title": "Edge",
+  "description": "A typed, evidence-backed connection between two findings.",
+  "type": "object",
+  "required": ["source", "target", "type", "rationale", "evidence", "confidence"],
+  "properties": {
+    "edge_id": {"type": "string"},
+    "source": {"type": "string"},
+    "target": {"type": "string"},
+    "type": {"enum": ["replicates", "consistent_with", "contradicts", "discordant_levels", "shares_cohort", "same_group", "method_confound", "poolable", "related_entity"]},
+    "polarity": {"enum": ["supports", "conflicts", "caution", "neutral"]},
+    "rationale": {"type": "string", "minLength": 10},
+    "qualifiers": {"type": "array", "items": {"type": "string"}},
+    "evidence": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["finding_id", "quote", "page"],
+        "properties": {
+          "finding_id": {"type": "string"},
+          "quote": {"type": "string", "minLength": 8},
+          "page": {"type": ["integer", "null"], "minimum": 1},
+          "verified": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "created_by": {"type": "string"},
+    "pipeline_version": {"type": "string"},
+    "flags": {"type": "array", "items": {"type": "string"}}
+  }
+}

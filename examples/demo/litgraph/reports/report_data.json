@@ -1,0 +1,103 @@
+{
+  "generated": "2026-10-24T21:53",
+  "pipeline_version": "0.1.0",
+  "replication": [
+    {
+      "entity": "miR-26a-5p",
+      "entity_id": "mir-26a-5p",
+      "type": "miRNA",
+      "papers": 3,
+      "findings": 3,
+      "replicates": 1,
+      "conflicts": 2,
+      "groups": 2,
+      "verdict": "mixed"
+    },
+    {
+      "entity": "miR-192-5p",
+      "entity_id": "mir-192-5p",
+      "type": "miRNA",
+      "papers": 2,
+      "findings": 2,
+      "replicates": 0,
+      "conflicts": 1,
+      "groups": 2,
+      "verdict": "conflicting"
+    },
+    {
+      "entity": "miR-199a-5p",
+      "entity_id": "mir-199a-5p",
+      "type": "miRNA",
+      "papers": 1,
+      "findings": 1,
+      "replicates": 0,
+      "conflicts": 0,
+      "groups": 1,
+      "verdict": "single report"
+    }
+  ],
+  "overlap": {
+    "miRNA": {
+      "entities": 3,
+      "in_2plus_papers": 2
+    }
+  },
+  "contradiction_clusters": [
+    {
+      "findings": [
+        "chen2023-f2",
+        "lattekivi2022-f1",
+        "pasquali2020-f1"
+      ],
+      "edges": [
+        "e-c024cf5f39",
+        "e-a4ff5bc97e"
+      ],
+      "explanations": [
+        "e-817a3fdf38"
+      ],
+      "qualifiers": []
+    },
+    {
+      "findings": [
+        "lattekivi2022-f2",
+        "pasquali2020-f2"
+      ],
+      "edges": [
+        "e-d04fc3b001"
+      ],
+      "explanations": [
+        "e-b4e1dfa79b"
+      ],
+      "qualifiers": []
+    }
+  ],
+  "independence": {
+    "author_groups": {
+      "group-koks": [
+        "chen2023",
+        "lattekivi2022"
+      ]
+    },
+    "shared_cohorts": [
+      "psobank"
+    ],
+    "single_group_entities": []
+  },
+  "poolable_sets": [
+    {
+      "entity": "miR-26a-5p",
+      "comparison": "Psoriatic arthritis vs Psoriasis without arthritis",
+      "findings": [
+        "pasquali2020-f1",
+        "lattekivi2022-f1"
+      ],
+      "stat_types": [
+        "mean_sd",
+        "mean_sem"
+      ],
+      "csv": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/reports/poolable_mir-26a-5p_psoriatic-arthritis-vs-psoriasis-without.csv",
+      "complete_rows": 2
+    }
+  ]
+}

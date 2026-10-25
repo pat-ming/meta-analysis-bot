@@ -1,0 +1,8 @@
+{
+  "name": "litgraph",
+  "displayName": "litgraph",
+  "version": "0.1.0",
+  "description": "Reads a folder of papers, extracts their findings with quoted evidence, connects them (replicates, contradicts, shares cohort, poolable…) and renders an interactive graph you can review.",
+  "keywords": ["systematic-review", "meta-analysis", "literature", "evidence-synthesis", "knowledge-graph"],
+  "license": "MIT"
+}

@@ -1,0 +1,46 @@
+{
+  "papers": {
+    "chen2023": {
+      "status": "ok",
+      "findings": 2,
+      "verified": 2,
+      "flagged": 0
+    },
+    "lattekivi2022": {
+      "status": "ok",
+      "findings": 2,
+      "verified": 2,
+      "flagged": 0
+    },
+    "pasquali2020": {
+      "status": "ok",
+      "findings": 2,
+      "verified": 1,
+      "flagged": 1
+    }
+  },
+  "quote_failures": [
+    {
+      "finding_id": "pasquali2020-f2",
+      "problems": [
+        {
+          "page": 1,
+          "status": "wrong_page",
+          "found_page": 2,
+          "quote": "In contrast, miR-192-5p was decreased in PsA versus PsC"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "papers": {
+      "ok": 3
+    },
+    "findings": 6,
+    "quotes_verified": "5/6",
+    "flags": {
+      "quote_wrong_page": 1
+    },
+    "report_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/validation_report.json"
+  }
+}

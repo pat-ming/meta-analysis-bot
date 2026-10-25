@@ -1,0 +1,104 @@
+{
+  "paper_id": "chen2023",
+  "file_hash": "sha256:5368e26157137393a95fa0d07bfd781e03a1bac57aa7b257d929929212496d11",
+  "extractor_version": "test",
+  "paper": {
+    "title": "Neuronal EV cargo in psoriatic arthritis",
+    "authors": [
+      "Chen Y",
+      "Wang L",
+      "Kingo K",
+      "Koks S"
+    ],
+    "year": 2023,
+    "suggested_paper_id": "chen2023"
+  },
+  "cohorts": [
+    {
+      "name": "PsoBank",
+      "evidence": [
+        {
+          "quote": "Participants were drawn from the PsoBank cohort.",
+          "page": 1
+        }
+      ]
+    }
+  ],
+  "baseline": null,
+  "findings": [
+    {
+      "finding_id": "chen2023-f1",
+      "claim": "miR-199a-5p is higher in PsA EVs than in PsV EVs.",
+      "finding_type": "group_difference",
+      "entity": "miR-199a-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsV",
+        "subgroup": null
+      },
+      "direction": "up",
+      "significant": true,
+      "stats": {
+        "groups": [],
+        "effect": null,
+        "p_value": 0.03
+      },
+      "methods": {
+        "biofluid": "serum",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+          "page": 2,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    },
+    {
+      "finding_id": "chen2023-f2",
+      "claim": "miR-26a-5p does not differ between PsA and PsV.",
+      "finding_type": "null_result",
+      "entity": "miR-26a-5p",
+      "entity_type": "miRNA",
+      "comparison": {
+        "case": "PsA",
+        "control": "PsV",
+        "subgroup": null
+      },
+      "direction": "none",
+      "significant": false,
+      "stats": {
+        "groups": [],
+        "effect": null,
+        "p_value": 0.41
+      },
+      "methods": {
+        "biofluid": "serum",
+        "ev_type": "general",
+        "isolation": "SEC",
+        "assay": "qPCR"
+      },
+      "population": {
+        "n_total": null
+      },
+      "adjusted": false,
+      "evidence": [
+        {
+          "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+          "page": 2,
+          "location": "Results"
+        }
+      ],
+      "extraction_confidence": 0.9
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+
+=== PAGE 1 ===
+Neuronal EV cargo in psoriatic arthritis
+Chen Y, Wang L, Kingo K, Koks S
+Participants were drawn from the PsoBank cohort.
+
+=== PAGE 2 ===
+Results
+miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs (p = 0.03).
+We found no difference in miR-26a-5p between PsA and PsV (p = 0.41).

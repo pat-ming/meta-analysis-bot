@@ -1,0 +1,61 @@
+{
+  "entities": [
+    {
+      "entity_id": "mir-26a-5p",
+      "canonical": "miR-26a-5p",
+      "type": "miRNA",
+      "aliases": [
+        "miRNA-26a-5p"
+      ],
+      "related": []
+    },
+    {
+      "entity_id": "mir-192-5p",
+      "canonical": "miR-192-5p",
+      "type": "miRNA",
+      "aliases": [
+        "hsa-miR-192-5p"
+      ],
+      "related": []
+    },
+    {
+      "entity_id": "mir-199a-5p",
+      "canonical": "miR-199a-5p",
+      "type": "miRNA",
+      "aliases": [],
+      "related": [
+        {
+          "entity_id": "mir-26a-5p",
+          "relation": "test_relation"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "psa",
+      "canonical": "Psoriatic arthritis",
+      "aliases": [
+        "PsA"
+      ],
+      "parent": null
+    },
+    {
+      "group_id": "non-psa",
+      "canonical": "Psoriasis without arthritis",
+      "aliases": [
+        "PsC",
+        "cutaneous psoriasis"
+      ],
+      "parent": null
+    },
+    {
+      "group_id": "psv",
+      "canonical": "Plaque psoriasis",
+      "aliases": [
+        "PsV"
+      ],
+      "parent": "non-psa"
+    }
+  ]
+}

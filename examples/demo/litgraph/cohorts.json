@@ -1,0 +1,32 @@
+{
+  "cohorts": [
+    {
+      "cohort_id": "psobank",
+      "name": "PsoBank",
+      "aliases": [],
+      "registry_id": null,
+      "papers": [
+        "lattekivi2022",
+        "chen2023"
+      ],
+      "evidence": [
+        {
+          "paper_id": "lattekivi2022",
+          "quote": "Patients were recruited from the PsoBank cohort",
+          "page": 1,
+          "verified": "verified",
+          "found_page": 1,
+          "match_score": 1.0
+        },
+        {
+          "paper_id": "chen2023",
+          "quote": "Participants were drawn from the PsoBank cohort.",
+          "page": 1,
+          "verified": "verified",
+          "found_page": 1,
+          "match_score": 1.0
+        }
+      ]
+    }
+  ]
+}

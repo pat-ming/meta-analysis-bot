@@ -1,0 +1,242 @@
+{
+  "lattekivi2022-f2|pasquali2020-f2": {
+    "hashes": {
+      "lattekivi2022-f2": "138a0eb5b1f1",
+      "pasquali2020-f2": "700dd4d98f58"
+    },
+    "edges": [
+      {
+        "type": "contradicts",
+        "confidence": 0.65,
+        "source": "lattekivi2022-f2",
+        "target": "pasquali2020-f2",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "lattekivi2022-f2",
+            "quote": "Serum EV miR-192-5p was elevated in PsA compared with PsV",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f2",
+            "quote": "In contrast, miR-192-5p was decreased in PsA versus PsC",
+            "page": 1
+          }
+        ]
+      },
+      {
+        "type": "method_confound",
+        "confidence": 0.4,
+        "source": "lattekivi2022-f2",
+        "target": "pasquali2020-f2",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "lattekivi2022-f2",
+            "quote": "Serum EV miR-192-5p was elevated in PsA compared with PsV",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f2",
+            "quote": "In contrast, miR-192-5p was decreased in PsA versus PsC",
+            "page": 1
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  },
+  "chen2023-f1|lattekivi2022-f1": {
+    "hashes": {
+      "chen2023-f1": "da503c7c11d2",
+      "lattekivi2022-f1": "9c64e05e94d1"
+    },
+    "edges": [
+      {
+        "type": "related_entity",
+        "confidence": 0.5,
+        "source": "chen2023-f1",
+        "target": "lattekivi2022-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "chen2023-f1",
+            "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+            "page": 2
+          },
+          {
+            "finding_id": "lattekivi2022-f1",
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  },
+  "chen2023-f1|pasquali2020-f1": {
+    "hashes": {
+      "chen2023-f1": "da503c7c11d2",
+      "pasquali2020-f1": "673ccad149e6"
+    },
+    "edges": [
+      {
+        "type": "related_entity",
+        "confidence": 0.5,
+        "source": "chen2023-f1",
+        "target": "pasquali2020-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "chen2023-f1",
+            "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f1",
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  },
+  "chen2023-f2|lattekivi2022-f1": {
+    "hashes": {
+      "chen2023-f2": "abb8799a8300",
+      "lattekivi2022-f1": "9c64e05e94d1"
+    },
+    "edges": [
+      {
+        "type": "contradicts",
+        "confidence": 0.65,
+        "source": "chen2023-f2",
+        "target": "lattekivi2022-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "chen2023-f2",
+            "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+            "page": 2
+          },
+          {
+            "finding_id": "lattekivi2022-f1",
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  },
+  "chen2023-f2|pasquali2020-f1": {
+    "hashes": {
+      "chen2023-f2": "abb8799a8300",
+      "pasquali2020-f1": "673ccad149e6"
+    },
+    "edges": [
+      {
+        "type": "contradicts",
+        "confidence": 0.65,
+        "source": "chen2023-f2",
+        "target": "pasquali2020-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "chen2023-f2",
+            "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f1",
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2
+          }
+        ]
+      },
+      {
+        "type": "method_confound",
+        "confidence": 0.4,
+        "source": "chen2023-f2",
+        "target": "pasquali2020-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "chen2023-f2",
+            "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f1",
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  },
+  "lattekivi2022-f1|pasquali2020-f1": {
+    "hashes": {
+      "lattekivi2022-f1": "9c64e05e94d1",
+      "pasquali2020-f1": "673ccad149e6"
+    },
+    "edges": [
+      {
+        "type": "replicates",
+        "confidence": 0.8,
+        "source": "lattekivi2022-f1",
+        "target": "pasquali2020-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "lattekivi2022-f1",
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f1",
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2
+          }
+        ]
+      },
+      {
+        "type": "poolable",
+        "confidence": 0.7,
+        "source": "lattekivi2022-f1",
+        "target": "pasquali2020-f1",
+        "rationale": "Rule-based test judgment for this pair.",
+        "qualifiers": [],
+        "evidence": [
+          {
+            "finding_id": "lattekivi2022-f1",
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2
+          },
+          {
+            "finding_id": "pasquali2020-f1",
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2
+          }
+        ]
+      }
+    ],
+    "no_edge_reason": null,
+    "batch": "batch-001"
+  }
+}

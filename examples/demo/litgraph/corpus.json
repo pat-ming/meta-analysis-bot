@@ -1,0 +1,69 @@
+[
+  {
+    "paper_id": "chen2023",
+    "pdf_path": "papers/10.1234_abc.2023.pdf",
+    "file_hash": "sha256:5368e26157137393a95fa0d07bfd781e03a1bac57aa7b257d929929212496d11",
+    "id_provisional": false,
+    "n_pages": 2,
+    "doi": "10.1234/abc.2023",
+    "title": "Neuronal EV cargo in psoriatic arthritis",
+    "authors": [
+      "Chen Y",
+      "Wang L",
+      "Kingo K",
+      "Koks S"
+    ],
+    "year": 2023,
+    "journal": null,
+    "pmid": null,
+    "study_design": null,
+    "author_group": "group-koks",
+    "cohort_ids": [
+      "psobank"
+    ]
+  },
+  {
+    "paper_id": "lattekivi2022",
+    "pdf_path": "papers/lattekivi2022.pdf",
+    "file_hash": "sha256:97377d9f4176c37dc084aef675e4344f162ff98751e2c29650456450c5511314",
+    "id_provisional": false,
+    "n_pages": 2,
+    "doi": "10.3390/ijms23010001",
+    "title": "Profiling serum extracellular vesicles in psoriasis and psoriatic arthritis",
+    "authors": [
+      "Lattekivi F",
+      "Kingo K",
+      "Salumets A",
+      "Koks S"
+    ],
+    "year": 2022,
+    "journal": "Int J Mol Sci",
+    "pmid": null,
+    "study_design": null,
+    "author_group": "group-koks",
+    "cohort_ids": [
+      "psobank"
+    ]
+  },
+  {
+    "paper_id": "pasquali2020",
+    "pdf_path": "papers/pasquali2020.pdf",
+    "file_hash": "sha256:2e735eeb32f768ef7e0db33663ff053734ead8e287cb7508cf9f3ac35eacf9b6",
+    "id_provisional": false,
+    "n_pages": 2,
+    "pmid": "31234567",
+    "title": "Plasma extracellular vesicle microRNAs in psoriatic disease",
+    "authors": [
+      "Pasquali L",
+      "Svedbom A",
+      "Srivastava A",
+      "Stahle M"
+    ],
+    "year": 2020,
+    "journal": null,
+    "doi": null,
+    "study_design": null,
+    "author_group": "group-stahle",
+    "cohort_ids": []
+  }
+]

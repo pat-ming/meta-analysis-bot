@@ -1,0 +1,780 @@
+{
+  "batch_id": "batch-001",
+  "out_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/judged/batch-001.json",
+  "pairs": [
+    {
+      "pair_id": "p-f440a3de9f",
+      "reasons": [
+        "compatible_comparison",
+        "same_entity"
+      ],
+      "a": {
+        "finding_id": "lattekivi2022-f2",
+        "claim": "Serum EV miR-192-5p is higher in PsA than in PsV.",
+        "finding_type": "group_difference",
+        "entity": "hsa-miR-192-5p",
+        "entity_id": "mir-192-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.01
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "Serum EV miR-192-5p was elevated in PsA compared with PsV",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "lattekivi2022",
+          "first_author": "Lattekivi F",
+          "last_author": "Koks S",
+          "year": 2022,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "pasquali2020-f2",
+        "claim": "miR-192-5p is lower in PsA than in PsC.",
+        "finding_type": "group_difference",
+        "entity": "miR-192-5p",
+        "entity_id": "mir-192-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsC",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "non-psa"
+        },
+        "direction": "down",
+        "significant": true,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.02
+        },
+        "methods": {
+          "biofluid": "plasma",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [
+          "quote_wrong_page"
+        ],
+        "evidence": [
+          {
+            "quote": "In contrast, miR-192-5p was decreased in PsA versus PsC",
+            "page": 1,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "pasquali2020",
+          "first_author": "Pasquali L",
+          "last_author": "Stahle M",
+          "year": 2020,
+          "author_group": "group-stahle",
+          "cohort_ids": [],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "lattekivi2022-f2": "138a0eb5b1f1",
+        "pasquali2020-f2": "700dd4d98f58"
+      }
+    },
+    {
+      "pair_id": "p-140dc59694",
+      "reasons": [
+        "compatible_comparison",
+        "related_entity:test_relation"
+      ],
+      "a": {
+        "finding_id": "chen2023-f1",
+        "claim": "miR-199a-5p is higher in PsA EVs than in PsV EVs.",
+        "finding_type": "group_difference",
+        "entity": "miR-199a-5p",
+        "entity_id": "mir-199a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.03
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "chen2023",
+          "first_author": "Chen Y",
+          "last_author": "Koks S",
+          "year": 2023,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "lattekivi2022-f1",
+        "claim": "EV miR-26a-5p is higher in PsA than in PsV.",
+        "finding_type": "group_difference",
+        "entity": "miR-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 25,
+              "value": 4.1,
+              "spread": 1.2,
+              "stat_type": "mean_sd"
+            },
+            {
+              "label": "PsV",
+              "n": 25,
+              "value": 2.9,
+              "spread": 1.0,
+              "stat_type": "mean_sd"
+            }
+          ],
+          "effect": null,
+          "p_value": 0.004
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "lattekivi2022",
+          "first_author": "Lattekivi F",
+          "last_author": "Koks S",
+          "year": 2022,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "chen2023-f1": "da503c7c11d2",
+        "lattekivi2022-f1": "9c64e05e94d1"
+      }
+    },
+    {
+      "pair_id": "p-c39ee4f456",
+      "reasons": [
+        "compatible_comparison",
+        "related_entity:test_relation"
+      ],
+      "a": {
+        "finding_id": "chen2023-f1",
+        "claim": "miR-199a-5p is higher in PsA EVs than in PsV EVs.",
+        "finding_type": "group_difference",
+        "entity": "miR-199a-5p",
+        "entity_id": "mir-199a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.03
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "miR-199a-5p was up-regulated in PsA EVs compared with PsV EVs",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "chen2023",
+          "first_author": "Chen Y",
+          "last_author": "Koks S",
+          "year": 2023,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "pasquali2020-f1",
+        "claim": "Plasma EV miR-26a-5p is higher in PsA than in cutaneous psoriasis.",
+        "finding_type": "group_difference",
+        "entity": "miRNA-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsC",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "non-psa"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 30,
+              "value": 3.8,
+              "spread": 0.3,
+              "stat_type": "mean_sem"
+            },
+            {
+              "label": "PsC",
+              "n": 28,
+              "value": 2.7,
+              "spread": 0.25,
+              "stat_type": "mean_sem"
+            }
+          ],
+          "effect": null,
+          "p_value": "<0.001"
+        },
+        "methods": {
+          "biofluid": "plasma",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "pasquali2020",
+          "first_author": "Pasquali L",
+          "last_author": "Stahle M",
+          "year": 2020,
+          "author_group": "group-stahle",
+          "cohort_ids": [],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "chen2023-f1": "da503c7c11d2",
+        "pasquali2020-f1": "673ccad149e6"
+      }
+    },
+    {
+      "pair_id": "p-7957faeb29",
+      "reasons": [
+        "compatible_comparison",
+        "same_entity"
+      ],
+      "a": {
+        "finding_id": "chen2023-f2",
+        "claim": "miR-26a-5p does not differ between PsA and PsV.",
+        "finding_type": "null_result",
+        "entity": "miR-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "none",
+        "significant": false,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.41
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "chen2023",
+          "first_author": "Chen Y",
+          "last_author": "Koks S",
+          "year": 2023,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "lattekivi2022-f1",
+        "claim": "EV miR-26a-5p is higher in PsA than in PsV.",
+        "finding_type": "group_difference",
+        "entity": "miR-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 25,
+              "value": 4.1,
+              "spread": 1.2,
+              "stat_type": "mean_sd"
+            },
+            {
+              "label": "PsV",
+              "n": 25,
+              "value": 2.9,
+              "spread": 1.0,
+              "stat_type": "mean_sd"
+            }
+          ],
+          "effect": null,
+          "p_value": 0.004
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "lattekivi2022",
+          "first_author": "Lattekivi F",
+          "last_author": "Koks S",
+          "year": 2022,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "chen2023-f2": "abb8799a8300",
+        "lattekivi2022-f1": "9c64e05e94d1"
+      }
+    },
+    {
+      "pair_id": "p-007f110cee",
+      "reasons": [
+        "compatible_comparison",
+        "same_entity"
+      ],
+      "a": {
+        "finding_id": "chen2023-f2",
+        "claim": "miR-26a-5p does not differ between PsA and PsV.",
+        "finding_type": "null_result",
+        "entity": "miR-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "none",
+        "significant": false,
+        "stats": {
+          "groups": [],
+          "effect": null,
+          "p_value": 0.41
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "We found no difference in miR-26a-5p between PsA and PsV",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "chen2023",
+          "first_author": "Chen Y",
+          "last_author": "Koks S",
+          "year": 2023,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "pasquali2020-f1",
+        "claim": "Plasma EV miR-26a-5p is higher in PsA than in cutaneous psoriasis.",
+        "finding_type": "group_difference",
+        "entity": "miRNA-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsC",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "non-psa"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 30,
+              "value": 3.8,
+              "spread": 0.3,
+              "stat_type": "mean_sem"
+            },
+            {
+              "label": "PsC",
+              "n": 28,
+              "value": 2.7,
+              "spread": 0.25,
+              "stat_type": "mean_sem"
+            }
+          ],
+          "effect": null,
+          "p_value": "<0.001"
+        },
+        "methods": {
+          "biofluid": "plasma",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "pasquali2020",
+          "first_author": "Pasquali L",
+          "last_author": "Stahle M",
+          "year": 2020,
+          "author_group": "group-stahle",
+          "cohort_ids": [],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "chen2023-f2": "abb8799a8300",
+        "pasquali2020-f1": "673ccad149e6"
+      }
+    },
+    {
+      "pair_id": "p-9afd21dcb1",
+      "reasons": [
+        "compatible_comparison",
+        "same_entity"
+      ],
+      "a": {
+        "finding_id": "lattekivi2022-f1",
+        "claim": "EV miR-26a-5p is higher in PsA than in PsV.",
+        "finding_type": "group_difference",
+        "entity": "miR-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsV",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "psv"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 25,
+              "value": 4.1,
+              "spread": 1.2,
+              "stat_type": "mean_sd"
+            },
+            {
+              "label": "PsV",
+              "n": 25,
+              "value": 2.9,
+              "spread": 1.0,
+              "stat_type": "mean_sd"
+            }
+          ],
+          "effect": null,
+          "p_value": 0.004
+        },
+        "methods": {
+          "biofluid": "serum",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "EV miR-26a-5p was significantly higher in PsA than in PsV patients",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "lattekivi2022",
+          "first_author": "Lattekivi F",
+          "last_author": "Koks S",
+          "year": 2022,
+          "author_group": "group-koks",
+          "cohort_ids": [
+            "psobank"
+          ],
+          "study_design": null
+        }
+      },
+      "b": {
+        "finding_id": "pasquali2020-f1",
+        "claim": "Plasma EV miR-26a-5p is higher in PsA than in cutaneous psoriasis.",
+        "finding_type": "group_difference",
+        "entity": "miRNA-26a-5p",
+        "entity_id": "mir-26a-5p",
+        "entity_type": "miRNA",
+        "comparison": {
+          "case": "PsA",
+          "control": "PsC",
+          "subgroup": null,
+          "case_id": "psa",
+          "control_id": "non-psa"
+        },
+        "direction": "up",
+        "significant": true,
+        "stats": {
+          "groups": [
+            {
+              "label": "PsA",
+              "n": 30,
+              "value": 3.8,
+              "spread": 0.3,
+              "stat_type": "mean_sem"
+            },
+            {
+              "label": "PsC",
+              "n": 28,
+              "value": 2.7,
+              "spread": 0.25,
+              "stat_type": "mean_sem"
+            }
+          ],
+          "effect": null,
+          "p_value": "<0.001"
+        },
+        "methods": {
+          "biofluid": "plasma",
+          "ev_type": "general",
+          "isolation": "SEC",
+          "assay": "qPCR"
+        },
+        "population": {
+          "n_total": null
+        },
+        "adjusted": false,
+        "covariates": null,
+        "flags": [],
+        "evidence": [
+          {
+            "quote": "Plasma EV miR-26a-5p levels were increased in PsA relative to cutaneous psoriasis",
+            "page": 2,
+            "location": "Results"
+          }
+        ],
+        "paper": {
+          "paper_id": "pasquali2020",
+          "first_author": "Pasquali L",
+          "last_author": "Stahle M",
+          "year": 2020,
+          "author_group": "group-stahle",
+          "cohort_ids": [],
+          "study_design": null
+        }
+      },
+      "hashes": {
+        "lattekivi2022-f1": "9c64e05e94d1",
+        "pasquali2020-f1": "673ccad149e6"
+      }
+    }
+  ]
+}

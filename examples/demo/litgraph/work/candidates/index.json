@@ -1,0 +1,11 @@
+{
+  "project": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo",
+  "batches": [
+    {
+      "batch_id": "batch-001",
+      "path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/candidates/batch-001.json",
+      "out_path": "/Users/patrickming/Desktop/Coding Projects/meta-analysis-bot/examples/demo/litgraph/work/judged/batch-001.json",
+      "pairs": 6
+    }
+  ]
+}

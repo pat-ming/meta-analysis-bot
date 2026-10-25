@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "extraction.schema.json",
+  "title": "Extraction",
+  "description": "Everything the paper-extractor pulls out of one PDF. Written to litgraph/extractions/<paper_id>.json.",
+  "type": "object",
+  "required": ["paper_id", "file_hash", "paper", "findings"],
+  "properties": {
+    "paper_id": {"type": "string"},
+    "file_hash": {"type": "string", "description": "Copied from the ingest todo; ties the cache to this exact PDF."},
+    "extractor_version": {"type": "string"},
+    "paper": {
+      "type": "object",
+      "required": ["title", "authors", "year"],
+      "properties": {
+        "title": {"type": "string"},
+        "authors": {"type": "array", "items": {"type": "string"}, "minItems": 1, "description": "'Surname Initials', in byline order"},
+        "year": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2100},
+        "journal": {"type": ["string", "null"]},
+        "doi": {"type": ["string", "null"]},
+        "pmid": {"type": ["string", "null"]},
+        "suggested_paper_id": {"type": ["string", "null"], "pattern": "^[a-z]+[0-9]{4}[a-z]?$"},
+        "study_design": {"type": ["string", "null"]}
+      }
+    },
+    "cohorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "evidence"],
+        "properties": {
+          "name": {"type": "string"},
+          "aliases": {"type": "array", "items": {"type": "string"}},
+          "registry_id": {"type": ["string", "null"]},
+          "description": {"type": ["string", "null"]},
+          "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "finding.schema.json#/$defs/evidence"}}
+        }
+      }
+    },
+    "baseline": {
+      "type": ["array", "null"],
+      "description": "Baseline characteristics table, one entry per group; used to spot shared cohorts.",
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {
+          "label": {"type": "string"},
+          "n": {"type": ["integer", "null"]},
+          "age_mean": {"type": ["number", "null"]},
+          "pct_female": {"type": ["number", "null"]}
+        }
+      }
+    },
+    "findings": {"type": "array", "items": {"$ref": "finding.schema.json"}},
+    "notes": {"type": ["string", "null"]}
+  }
+}

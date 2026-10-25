@@ -1,0 +1,28 @@
+[
+  {
+    "name": "PsoBank",
+    "evidence": [
+      {
+        "quote": "Participants were drawn from the PsoBank cohort.",
+        "page": 1,
+        "verified": "verified",
+        "found_page": 1,
+        "match_score": 1.0
+      }
+    ],
+    "paper_id": "chen2023"
+  },
+  {
+    "name": "PsoBank",
+    "evidence": [
+      {
+        "quote": "Patients were recruited from the PsoBank cohort",
+        "page": 1,
+        "verified": "verified",
+        "found_page": 1,
+        "match_score": 1.0
+      }
+    ],
+    "paper_id": "lattekivi2022"
+  }
+]

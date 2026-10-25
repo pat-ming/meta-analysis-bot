@@ -1,0 +1,7 @@
+{
+  "name": "litgraph-dev",
+  "owner": { "name": "litgraph" },
+  "plugins": [
+    { "name": "litgraph", "source": "./litgraph", "description": "Findings graph for systematic reviews" }
+  ]
+}
