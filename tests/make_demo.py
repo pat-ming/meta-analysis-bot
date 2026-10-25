@@ -1,5 +1,7 @@
 """Build a small demo graph in graphs/psa-demo (fake extractions and judgments) to try the viewer:
     python3 tests/make_demo.py && python3 start.py
+
+Re-running deletes and rebuilds graphs/psa-demo, including any reviews made in it.
 """
 import sys, json, contextlib, io
 from pathlib import Path
@@ -12,6 +14,8 @@ from litgraph_py.io import Project, read_json, write_json
 def run(*a):
     with contextlib.redirect_stdout(io.StringIO()):
         cli.main(["-C", str(demo), *a])
+import shutil
+shutil.rmtree(demo, ignore_errors=True)  # always rebuilt from scratch; it is throwaway demo data
 (demo / "papers").mkdir(parents=True, exist_ok=True)
 for n, pg in fixture.PAPERS.items(): fixture.make_pdf(demo / "papers" / n, pg)
 p = Project(demo)

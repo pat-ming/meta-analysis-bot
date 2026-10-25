@@ -51,7 +51,7 @@ def graph_data(project, live: bool = False, base: str = "", home: str | None = N
 
 def _vendor() -> str:
     parts = []
-    for name in ("cytoscape.min.js", "cytoscape-svg.js"):
+    for name in ("cytoscape.min.js", "layout-base.js", "cose-base.js", "cytoscape-fcose.js", "cytoscape-svg.js"):
         p = VIEWER_DIR / "vendor" / name
         if p.exists():
             parts.append(p.read_text(encoding="utf-8").replace("</script", "<\\/script"))

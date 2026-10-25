@@ -1,0 +1,522 @@
+[
+  {
+    "paper_id": "kowalski2014a",
+    "title": "Extracellular vesicle biomarkers in ALS: study 1",
+    "authors": [
+      "Kowalski A",
+      "Lattekivi B",
+      "Ikeme Z"
+    ],
+    "year": 2014,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/kowalski2014a.pdf",
+    "file_hash": "sha256:0",
+    "author_group": "group-ikeme",
+    "cohort_ids": [
+      "cohort-a"
+    ]
+  },
+  {
+    "paper_id": "pasquali2013b",
+    "title": "Extracellular vesicle biomarkers in ALS: study 2",
+    "authors": [
+      "Pasquali A",
+      "Ivanova B",
+      "Rossi Z"
+    ],
+    "year": 2013,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/pasquali2013b.pdf",
+    "file_hash": "sha256:1",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "ivanova2020c",
+    "title": "Extracellular vesicle biomarkers in ALS: study 3",
+    "authors": [
+      "Ivanova A",
+      "Fischer B",
+      "Pasquali Z"
+    ],
+    "year": 2020,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/ivanova2020c.pdf",
+    "file_hash": "sha256:2",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "jensen2014d",
+    "title": "Extracellular vesicle biomarkers in ALS: study 4",
+    "authors": [
+      "Jensen A",
+      "Silva B",
+      "Pasquali Z"
+    ],
+    "year": 2014,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/jensen2014d.pdf",
+    "file_hash": "sha256:3",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "tanaka2022e",
+    "title": "Extracellular vesicle biomarkers in ALS: study 5",
+    "authors": [
+      "Tanaka A",
+      "Rossi B",
+      "Pasquali Z"
+    ],
+    "year": 2022,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/tanaka2022e.pdf",
+    "file_hash": "sha256:4",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "pasquali2019f",
+    "title": "Extracellular vesicle biomarkers in ALS: study 6",
+    "authors": [
+      "Pasquali A",
+      "Fischer B",
+      "Pasquali Z"
+    ],
+    "year": 2019,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/pasquali2019f.pdf",
+    "file_hash": "sha256:5",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "okafor2016g",
+    "title": "Extracellular vesicle biomarkers in ALS: study 7",
+    "authors": [
+      "Okafor A",
+      "Ivanova B",
+      "Lattekivi Z"
+    ],
+    "year": 2016,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/okafor2016g.pdf",
+    "file_hash": "sha256:6",
+    "author_group": "group-lattekivi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "kumar2016h",
+    "title": "Extracellular vesicle biomarkers in ALS: study 8",
+    "authors": [
+      "Kumar A",
+      "Nakamura B",
+      "Okafor Z"
+    ],
+    "year": 2016,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/kumar2016h.pdf",
+    "file_hash": "sha256:7",
+    "author_group": "group-okafor",
+    "cohort_ids": [
+      "cohort-a"
+    ]
+  },
+  {
+    "paper_id": "fischer2018i",
+    "title": "Extracellular vesicle biomarkers in ALS: study 9",
+    "authors": [
+      "Fischer A",
+      "Tanaka B",
+      "Pasquali Z"
+    ],
+    "year": 2018,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/fischer2018i.pdf",
+    "file_hash": "sha256:8",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "haddad2021j",
+    "title": "Extracellular vesicle biomarkers in ALS: study 10",
+    "authors": [
+      "Haddad A",
+      "Rossi B",
+      "Rossi Z"
+    ],
+    "year": 2021,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/haddad2021j.pdf",
+    "file_hash": "sha256:9",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "moreau2017a",
+    "title": "Extracellular vesicle biomarkers in ALS: study 11",
+    "authors": [
+      "Moreau A",
+      "Kowalski B",
+      "Chen Z"
+    ],
+    "year": 2017,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/moreau2017a.pdf",
+    "file_hash": "sha256:10",
+    "author_group": "group-chen",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "moreau2013b",
+    "title": "Extracellular vesicle biomarkers in ALS: study 12",
+    "authors": [
+      "Moreau A",
+      "Okafor B",
+      "Lattekivi Z"
+    ],
+    "year": 2013,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/moreau2013b.pdf",
+    "file_hash": "sha256:11",
+    "author_group": "group-lattekivi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "rossi2014c",
+    "title": "Extracellular vesicle biomarkers in ALS: study 13",
+    "authors": [
+      "Rossi A",
+      "Ikeme B",
+      "Rossi Z"
+    ],
+    "year": 2014,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/rossi2014c.pdf",
+    "file_hash": "sha256:12",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "nakamura2015d",
+    "title": "Extracellular vesicle biomarkers in ALS: study 14",
+    "authors": [
+      "Nakamura A",
+      "Silva B",
+      "Ikeme Z"
+    ],
+    "year": 2015,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/nakamura2015d.pdf",
+    "file_hash": "sha256:13",
+    "author_group": "group-ikeme",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "tanaka2012e",
+    "title": "Extracellular vesicle biomarkers in ALS: study 15",
+    "authors": [
+      "Tanaka A",
+      "Ivanova B",
+      "Okafor Z"
+    ],
+    "year": 2012,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/tanaka2012e.pdf",
+    "file_hash": "sha256:14",
+    "author_group": "group-okafor",
+    "cohort_ids": [
+      "cohort-a"
+    ]
+  },
+  {
+    "paper_id": "pasquali2015f",
+    "title": "Extracellular vesicle biomarkers in ALS: study 16",
+    "authors": [
+      "Pasquali A",
+      "Ivanova B",
+      "Chen Z"
+    ],
+    "year": 2015,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/pasquali2015f.pdf",
+    "file_hash": "sha256:15",
+    "author_group": "group-chen",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "nakamura2012g",
+    "title": "Extracellular vesicle biomarkers in ALS: study 17",
+    "authors": [
+      "Nakamura A",
+      "Kowalski B",
+      "Pasquali Z"
+    ],
+    "year": 2012,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/nakamura2012g.pdf",
+    "file_hash": "sha256:16",
+    "author_group": "group-pasquali",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "moreau2013h",
+    "title": "Extracellular vesicle biomarkers in ALS: study 18",
+    "authors": [
+      "Moreau A",
+      "Fischer B",
+      "Rossi Z"
+    ],
+    "year": 2013,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/moreau2013h.pdf",
+    "file_hash": "sha256:17",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "dubois2024i",
+    "title": "Extracellular vesicle biomarkers in ALS: study 19",
+    "authors": [
+      "Dubois A",
+      "Dubois B",
+      "Rossi Z"
+    ],
+    "year": 2024,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/dubois2024i.pdf",
+    "file_hash": "sha256:18",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "dubois2020j",
+    "title": "Extracellular vesicle biomarkers in ALS: study 20",
+    "authors": [
+      "Dubois A",
+      "Larsen B",
+      "Rossi Z"
+    ],
+    "year": 2020,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/dubois2020j.pdf",
+    "file_hash": "sha256:19",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "rossi2025a",
+    "title": "Extracellular vesicle biomarkers in ALS: study 21",
+    "authors": [
+      "Rossi A",
+      "Novak B",
+      "Okafor Z"
+    ],
+    "year": 2025,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/rossi2025a.pdf",
+    "file_hash": "sha256:20",
+    "author_group": "group-okafor",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "ivanova2022b",
+    "title": "Extracellular vesicle biomarkers in ALS: study 22",
+    "authors": [
+      "Ivanova A",
+      "Novak B",
+      "Rossi Z"
+    ],
+    "year": 2022,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/ivanova2022b.pdf",
+    "file_hash": "sha256:21",
+    "author_group": "group-rossi",
+    "cohort_ids": [
+      "cohort-a"
+    ]
+  },
+  {
+    "paper_id": "garcia2022c",
+    "title": "Extracellular vesicle biomarkers in ALS: study 23",
+    "authors": [
+      "Garcia A",
+      "Moreau B",
+      "Chen Z"
+    ],
+    "year": 2022,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/garcia2022c.pdf",
+    "file_hash": "sha256:22",
+    "author_group": "group-chen",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "pasquali2019d",
+    "title": "Extracellular vesicle biomarkers in ALS: study 24",
+    "authors": [
+      "Pasquali A",
+      "Garcia B",
+      "Okafor Z"
+    ],
+    "year": 2019,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/pasquali2019d.pdf",
+    "file_hash": "sha256:23",
+    "author_group": "group-okafor",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "ikeme2014e",
+    "title": "Extracellular vesicle biomarkers in ALS: study 25",
+    "authors": [
+      "Ikeme A",
+      "Ikeme B",
+      "Okafor Z"
+    ],
+    "year": 2014,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/ikeme2014e.pdf",
+    "file_hash": "sha256:24",
+    "author_group": "group-okafor",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "ivanova2020f",
+    "title": "Extracellular vesicle biomarkers in ALS: study 26",
+    "authors": [
+      "Ivanova A",
+      "Okafor B",
+      "Okafor Z"
+    ],
+    "year": 2020,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/ivanova2020f.pdf",
+    "file_hash": "sha256:25",
+    "author_group": "group-okafor",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "silva2025g",
+    "title": "Extracellular vesicle biomarkers in ALS: study 27",
+    "authors": [
+      "Silva A",
+      "Jensen B",
+      "Lattekivi Z"
+    ],
+    "year": 2025,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/silva2025g.pdf",
+    "file_hash": "sha256:26",
+    "author_group": "group-lattekivi",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "nakamura2019h",
+    "title": "Extracellular vesicle biomarkers in ALS: study 28",
+    "authors": [
+      "Nakamura A",
+      "Nakamura B",
+      "Okafor Z"
+    ],
+    "year": 2019,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/nakamura2019h.pdf",
+    "file_hash": "sha256:27",
+    "author_group": "group-okafor",
+    "cohort_ids": []
+  },
+  {
+    "paper_id": "novak2020i",
+    "title": "Extracellular vesicle biomarkers in ALS: study 29",
+    "authors": [
+      "Novak A",
+      "Haddad B",
+      "Chen Z"
+    ],
+    "year": 2020,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/novak2020i.pdf",
+    "file_hash": "sha256:28",
+    "author_group": "group-chen",
+    "cohort_ids": [
+      "cohort-a"
+    ]
+  },
+  {
+    "paper_id": "larsen2022j",
+    "title": "Extracellular vesicle biomarkers in ALS: study 30",
+    "authors": [
+      "Larsen A",
+      "Lattekivi B",
+      "Rossi Z"
+    ],
+    "year": 2022,
+    "journal": "Synthetic J",
+    "doi": null,
+    "pmid": null,
+    "pdf_path": "papers/larsen2022j.pdf",
+    "file_hash": "sha256:29",
+    "author_group": "group-rossi",
+    "cohort_ids": []
+  }
+]

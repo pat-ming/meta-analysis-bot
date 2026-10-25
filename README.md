@@ -143,12 +143,26 @@ The viewer only listens on your own machine (`127.0.0.1`), so nobody else on the
 - **Click a connection** to see the rationale and both quotes side by side, then **Accept**,
   **Reject**, **Change type** or **Add note**. Decisions save immediately.
 - **Double-click a finding** to show only it and its neighbours. Press Esc to exit.
+- **Hover** over a finding or connection to light up its connections and fade everything else.
+- **Layouts**:
+  - *Clustered* (default): one ring per entity, so the connections between studies of the same
+    biomarker show as separate chords.
+  - *Force*: arranges findings by how they're connected.
+  - *Timeline*: one row per entity, findings placed by publication year, connections drawn as arcs.
+- **Connections → Within / Between**: show or hide connections inside a cluster (studies of the
+  same entity compared with each other) and connections that cross between clusters (related
+  entities, shared cohorts, same research group). With *Group by paper* on, the clusters are papers.
+- **Spacing** slider: spreads the findings further apart or pulls them together. Labels appear once
+  you zoom in.
 - **Views** on the left: *Replication*, *Independence* and *Poolable* (with a CSV export for each
   set).
 - **Panels:** drag the edges of the side panels to resize them, or double-click an edge to hide or
   show that panel.
 - **Theme:** the ◐ button switches between system, light and dark.
 - **Layout:** drag nodes to arrange them; the layout is remembered.
+- **Linkable views:** a view can be opened from its address, e.g.
+  `http://127.0.0.1:8765/g/als-ev/?layout=entity&view=replication&theme=light`. The options are
+  `layout`, `view`, `color`, `boxes=1`, `spacing` and `theme`.
 - **← Graphs** takes you back to the home page.
 
 ---
@@ -236,7 +250,8 @@ Run `./litgraph/bin/litgraph --help` for the rest (the individual pipeline stage
 ## Try it without real papers
 
 ```bash
-python3 tests/make_demo.py   # builds graphs/psa-demo from 3 synthetic papers
+python3 tests/make_demo.py         # graphs/psa-demo: 3 synthetic papers
+python3 tests/make_large_demo.py   # graphs/large-demo: 30 papers, about 300 findings, to see a realistic size
 python3 start.py
 ```
 

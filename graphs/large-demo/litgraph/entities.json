@@ -1,0 +1,221 @@
+{
+  "entities": [
+    {
+      "entity_id": "mir-21-3p",
+      "canonical": "miR-21-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-21-5p",
+      "canonical": "miR-21-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-26-3p",
+      "canonical": "miR-26-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-26-5p",
+      "canonical": "miR-26-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-92-3p",
+      "canonical": "miR-92-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-92-5p",
+      "canonical": "miR-92-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-124-3p",
+      "canonical": "miR-124-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-124-5p",
+      "canonical": "miR-124-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-146-3p",
+      "canonical": "miR-146-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-146-5p",
+      "canonical": "miR-146-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-155-3p",
+      "canonical": "miR-155-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-155-5p",
+      "canonical": "miR-155-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-192-3p",
+      "canonical": "miR-192-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-192-5p",
+      "canonical": "miR-192-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-199-3p",
+      "canonical": "miR-199-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-199-5p",
+      "canonical": "miR-199-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-206-3p",
+      "canonical": "miR-206-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-206-5p",
+      "canonical": "miR-206-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-223-3p",
+      "canonical": "miR-223-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-223-5p",
+      "canonical": "miR-223-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-338-3p",
+      "canonical": "miR-338-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-338-5p",
+      "canonical": "miR-338-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-451-3p",
+      "canonical": "miR-451-3p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "mir-451-5p",
+      "canonical": "miR-451-5p",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "tdp-43",
+      "canonical": "TDP-43",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "nfl",
+      "canonical": "NfL",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "sod1",
+      "canonical": "SOD1",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "fus",
+      "canonical": "FUS",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "alpha-synuclein",
+      "canonical": "alpha-synuclein",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "tau",
+      "canonical": "tau",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "gfap",
+      "canonical": "GFAP",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "cd63",
+      "canonical": "CD63",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "cd81",
+      "canonical": "CD81",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "l1cam",
+      "canonical": "L1CAM",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "rankl",
+      "canonical": "RANKL",
+      "type": "x",
+      "aliases": []
+    },
+    {
+      "entity_id": "umod",
+      "canonical": "UMOD",
+      "type": "x",
+      "aliases": []
+    }
+  ],
+  "groups": []
+}

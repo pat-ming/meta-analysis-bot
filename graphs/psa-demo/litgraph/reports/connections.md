@@ -1,6 +1,6 @@
 # Connections: EV miRNAs in PsA (demo)
 
-*3 papers · 6 findings · 13 connections (0 accepted by a reviewer) · generated 2026-10-25T11:03 · litgraph 0.1.0*
+*3 papers · 6 findings · 13 connections (0 accepted by a reviewer) · generated 2026-10-25T11:16 · litgraph 0.1.0*
 
 <!-- litgraph:narrative:start -->
 *Narrative summary not written yet.*
